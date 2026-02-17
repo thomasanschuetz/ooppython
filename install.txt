@@ -1,2 +1,3 @@
 python -m venv ooppython
 ooppython\Scripts\activate
+pip install -r requirements.txt
