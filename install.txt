@@ -1,0 +1,2 @@
+python -m venv ooppython
+ooppython\Scripts\activate
