@@ -33,6 +33,9 @@ class Kurs:
         if self.beginn is None or self.ende is None:
             return None
         return (self.ende - self.beginn).days + 1
+    
+    def faellig_in_tagen(self, datum: date) -> int:
+        return (self.ende - datum).days
 
     def set_data(self, schwere:int, note:float|None, pruefung_datum: date|None) -> None:
         self.schwere = schwere

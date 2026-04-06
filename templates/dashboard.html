@@ -7,35 +7,85 @@
     <h1>Dashboard {{ studium_name }}</h1>
     <a href="/update_studium">Studium bearbeiten</a>
 
-    
-    <div id="timeline" style="width:40%">
+    <div id="dashboard">
+        <div id="timeline" style="width:40%">
         
-        <div id="datum">
+            <div id="datum">
 
-            {% for d in studium.tage %}
-            <div class="tag{{' vergangen' if d.vergangen else ''}}" title="{{d.tag}}"></div>
-            {% endfor %}
+                {% for d in studium.tage %}
+                <div class="tag{{' vergangen' if d.vergangen else ''}}" title="{{d.tag}}"></div>
+                {% endfor %}
 
-            <!-- <div id="vergangen" style="flex:{{ studium.vergangene_tage }};"></div>
-            <div id="verbleibend" style="flex:{{ studium.verbleibende_tage }};"></div> -->
-        </div>
-        <div id="semesters">
-            {% for semester in studium.semester %}
-            <div class="semester" style="flex:{{ semester.hoehe_rel }};">
-                {{ semester.name }}
+                <!-- <div id="vergangen" style="flex:{{ studium.vergangene_tage }};"></div>
+                <div id="verbleibend" style="flex:{{ studium.verbleibende_tage }};"></div> -->
             </div>
-            {% endfor %}
-        </div>
-        
-        <div id="kurse">
-            {% for kurs in studium.kurse %}
-            <div class="kurs" style="flex:{{ kurs.hoehe_rel }};" title="{{kurs.beginn}} - {{kurs.ende}}">
-                {{ kurs.name }}
+            <div id="semesters">
+                {% for semester in studium.semester %}
+                <div class="semester" style="flex:{{ semester.hoehe_rel }};">
+                    {{ semester.name }}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
+            
+            <div id="kurse">
+                {% for kurs in studium.kurse %}
+                <div class="kurs" style="flex:{{ kurs.hoehe_rel }};" title="{{kurs.beginn}} - {{kurs.ende}}">
+                    {{ kurs.name }}
+                </div>
+                {% endfor %}
+            </div>
         
+        </div>
+        <div id="daten">
+            <div id="todo">
+                {% if studium.faellige_pruefungen %}
+                    <h2>Fällige Prüfungen</h2>
+                    <ul>
+                        {% for k in studium.faellige_pruefungen %}
+                        <li>{{k.name}} - seit {{k.faellig_seit_tage}} Tagen</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if studium.naechste_pruefungen %}
+                    <h2>Nächste Prüfungen</h2>
+                    <ul>
+                        {% for k in studium.naechste_pruefungen %}
+                        <li>{{k.name}} - in {{k.faellig_in_tage}} Tagen</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div id="noten">
+                <h2>Notendurchschnitt</h2>
+                <ul>
+                    <li><span>Ziel:</span> {{ studium.noten.ziel }}</li>
+                    <li class="{{ 'ok' if studium.noten.aktuell.ok else '' }}"><span>Aktuell:</span> {{ studium.noten.aktuell.note }}</li>
+                    <li class="{{ 'ok' if studium.noten.aktuell.ok else '' }}"><span>Benötigt:</span> {{ studium.noten.benoetigt.note }}</li>
+                </ul>
+            </div>
+            <div id="stats">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Kurse {{ studium.stats.anzahl_kurse }}</th>
+                        <th>ECTS {{ studium.stats.anzahl_ects }}</th>
+                    </tr>
+                    <tr>
+                        <th>Soll</th>
+                        <td>{{ studium.stats.anzahl_kurse_soll }}</td>
+                        <td>{{ studium.stats.anzahl_ects_soll }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ist</th>
+                        <td class="{{ 'ok' if studium.stats.kurse_ist.ok else '' }}">{{ studium.stats.kurse_ist.anzahl }}</td>
+                        <td class="{{ 'ok' if studium.stats.ects_ist.ok else '' }}">{{ studium.stats.ects_ist.anzahl }}</td>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
     </div>
+    
 </body>
 <style>
     html, body, *{
@@ -90,6 +140,10 @@
     }
     .kurs:first-child, .semester:first-child{
         border:none;
+    }
+
+    #dashboard{
+        display:flex;
     }
 </style>
 </html>

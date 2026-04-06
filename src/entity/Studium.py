@@ -80,9 +80,22 @@ class Studium:
     
     def kurse_offen(self) -> List[Kurs]:
         return [k for k in filter(lambda k: k.note is None, self.kurse.values())]
-    
+        
     def kurse_soll(self, datum: date) -> List[Kurs]:
         return [k for k in filter(lambda k: k.ende is not None and k.ende < datum, self.kurse_offen())]
+
+    def naechste_pruefungen(self, datum: date, max_kurse:int=3) -> List[Kurs]:    
+        return [k for k in filter(lambda k: k.note is None and datum <= k.ende, self.kurse.values())][:max_kurse]
+    
+    def anzahl_ects(self) -> int:
+        return sum([k.ects for k in self.kurse.values()])
+
+    def anzahl_ects_soll(self, datum: date) -> int:
+        return sum([k.ects for k in self.kurse_soll(datum)])
+    
+    def anzahl_ects_fertig(self) -> int:
+        return sum([k.ects for k in self.kurse_fertig()])
+
 
     def durchschnittsnote(self) -> float|None: # todo ects beachten
         kurse_fertig = self.kurse_fertig()
@@ -105,13 +118,7 @@ class Studium:
     
     def get_kurse(self) -> List[Kurs]:
         return [k for k in self.kurse.values()]
-
-    def faellige_pruefungen(self, datum:date, max_anzahl:int=3) -> List[Kurs]:
-        return [k for k in self.kurse_offen()][:max_anzahl]
     
-    def naechste_regulaere_pruefungen(self, datum:date, max_anzahl:int=3) -> List[Kurs]:
-        return [k for k in self.kurse_offen()][:max_anzahl]
-
     def set_kurs_data(self, kurs_id:str, schwere:int, note:float|None, pruefung_datum: date|None) -> None:
         kurs = self.kurs(kurs_id)
         if kurs is None:

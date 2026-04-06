@@ -39,11 +39,12 @@ if __name__ == "__main__":
     
     kurse[0].schwere = 5
     kurse[28].ects = 10
+    kurse[28].note = 6.0
     kurse[29].ects = 10
     kurse[30].ects = 10
     kurse[31].ects = 10
     studium = Studium("KI", date.today(), 43, 2.0, kurse)
-    studium_view = StudiumView(studium, date.today() + relativedelta(days=50))
+    studium_view = StudiumView(studium, date.today() + relativedelta(days=200))
 
 
 
