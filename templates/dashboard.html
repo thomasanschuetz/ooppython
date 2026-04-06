@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard {{ studium_name }}</title>
+</head>
+<body>
+    <h1>Dashboard {{ studium_name }}</h1>
+    <a href="/update_studium">Studium bearbeiten</a>
+
+    
+    <div id="timeline" style="width:40%">
+        
+        <div id="datum">
+
+            {% for d in studium.tage %}
+            <div class="tag{{' vergangen' if d.vergangen else ''}}" title="{{d.tag}}"></div>
+            {% endfor %}
+
+            <!-- <div id="vergangen" style="flex:{{ studium.vergangene_tage }};"></div>
+            <div id="verbleibend" style="flex:{{ studium.verbleibende_tage }};"></div> -->
+        </div>
+        <div id="semesters">
+            {% for semester in studium.semester %}
+            <div class="semester" style="flex:{{ semester.hoehe_rel }};">
+                {{ semester.name }}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div id="kurse">
+            {% for kurs in studium.kurse %}
+            <div class="kurs" style="flex:{{ kurs.hoehe_rel }};" title="{{kurs.beginn}} - {{kurs.ende}}">
+                {{ kurs.name }}
+            </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+</body>
+<style>
+    html, body, *{
+        box-sizing: border-box;
+    }
+
+    #timeline{
+        display:flex;
+        align-items:stretch;
+        width:40%;
+        height:1000px;
+        border:1px solid black;
+    }
+
+    #datum{
+        width:1rem;
+        background-color:yellow;
+        display:flex;
+        flex-direction: column;
+    }
+    #datum .vergangen{
+        background-color:green;
+    }
+    .tag{
+        flex:1;
+    }
+    #verbleibend, #vergangen {
+        width:100%;
+        flex-grow: 0;
+        flex-shrink: 1;
+    }
+    #verbleibend{
+        background-color:blue;
+    }
+
+    #semesters{
+        width:1rem;
+        display:flex;
+        flex-direction: column;
+        background-color:red;
+    }
+
+    #kurse{
+        flex-grow:1;
+        display: flex;
+        flex-direction:column;
+    }
+    .kurs, .semester{
+        flex-shrink: 1;
+        flex-grow:0;
+        border-top:1px solid black;
+    }
+    .kurs:first-child, .semester:first-child{
+        border:none;
+    }
+</style>
+</html>
+
