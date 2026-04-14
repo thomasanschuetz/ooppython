@@ -4,24 +4,20 @@
     <title>Dashboard {{ studium_name }}</title>
 </head>
 <body>
-    <h1>Dashboard {{ studium_name }}</h1>
-    <a href="/update_studium">Studium bearbeiten</a>
-
+    <h1>Dashboard {{ studium_name }} <button class="bearbeiten">&#9998;</button></h1>
+    
+    <div id="top"><button title="Neuer Kurs">&#x2795;</button></div>
     <div id="dashboard">
-        <div id="timeline" style="width:40%">
         
+        <div id="timeline" style="width:40%">
+            
             <div id="datum">
-
-                {% for d in studium.tage %}
-                <div class="tag{{' vergangen' if d.vergangen else ''}}" title="{{d.tag}}"></div>
-                {% endfor %}
-
-                <!-- <div id="vergangen" style="flex:{{ studium.vergangene_tage }};"></div>
-                <div id="verbleibend" style="flex:{{ studium.verbleibende_tage }};"></div> -->
+                <div id="vergangen" style="flex-grow:{{ studium.vergangene_tage }};" title="{{ studium.datum}} "></div>
+                <div id="verbleibend" style="flex-grow:{{ studium.verbleibende_tage }};"></div>
             </div>
             <div id="semesters">
                 {% for semester in studium.semester %}
-                <div class="semester" style="flex:{{ semester.hoehe_rel }};">
+                <div class="semester" style="flex-grow:{{ semester.hoehe_rel }};">
                     {{ semester.name }}
                 </div>
                 {% endfor %}
@@ -29,41 +25,65 @@
             
             <div id="kurse">
                 {% for kurs in studium.kurse %}
-                <div class="kurs" style="flex:{{ kurs.hoehe_rel }};" title="{{kurs.beginn}} - {{kurs.ende}}">
+                <div class="kurs" style="flex-grow:{{ kurs.hoehe_rel }};" title="{{kurs.beginn}} - {{kurs.ende}}">
                     {{ kurs.name }}
+
+
+                    <div class="buttons">
+                        <button class="hoch">&#9650;</button>
+                        <button class="runter">&#9660;</button>
+                        <button class="bearbeiten">&#9998;</button>
+                        
+                    </div>
+
+                    {% if kurs.ist_faellig %}
+                        <div class="status faellig"></div>
+                    {% elif kurs.ist_fertig %}
+                        <div class="status fertig"></div>
+                    {% elif kurs.ist_aktiv %}
+                        <div class="status aktiv"></div>
+                    {% else %}
+                        <div class="status"></div>
+                    {% endif %}
                 </div>
+                
                 {% endfor %}
             </div>
         
         </div>
         <div id="daten">
-            <div id="todo">
+            <div id="todo" class="card">
                 {% if studium.faellige_pruefungen %}
-                    <h2>Fällige Prüfungen</h2>
-                    <ul>
-                        {% for k in studium.faellige_pruefungen %}
-                        <li>{{k.name}} - seit {{k.faellig_seit_tage}} Tagen</li>
-                        {% endfor %}
-                    </ul>
+                    <div id="faellige_pruefungen">
+                        <h2>Fällige Prüfungen</h2>
+                        <ul>
+                            {% for k in studium.faellige_pruefungen %}
+                            <li>{{k.name}} - seit {{k.faellig_seit_tage}} Tagen</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 {% endif %}
                 {% if studium.naechste_pruefungen %}
+                    <div id="naechste_pruefungen">
                     <h2>Nächste Prüfungen</h2>
-                    <ul>
-                        {% for k in studium.naechste_pruefungen %}
-                        <li>{{k.name}} - in {{k.faellig_in_tage}} Tagen</li>
-                        {% endfor %}
-                    </ul>
+                        <ul>
+                            {% for k in studium.naechste_pruefungen %}
+                            <li>{{k.name}} - in {{k.faellig_in_tage}} Tagen</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 {% endif %}
             </div>
-            <div id="noten">
+            <div id="noten" class="card">
                 <h2>Notendurchschnitt</h2>
                 <ul>
-                    <li><span>Ziel:</span> {{ studium.noten.ziel }}</li>
-                    <li class="{{ 'ok' if studium.noten.aktuell.ok else '' }}"><span>Aktuell:</span> {{ studium.noten.aktuell.note }}</li>
-                    <li class="{{ 'ok' if studium.noten.aktuell.ok else '' }}"><span>Benötigt:</span> {{ studium.noten.benoetigt.note }}</li>
+                    <li><span class="label">Ziel:</span> {{ studium.noten.ziel }}</li>
+                    <li><span class="label">Aktuell:</span><span class="note{{ ' ok' if studium.noten.aktuell.ok else '' }}">{{ studium.noten.aktuell.note }}</span></li>
+                    <li><span class="label">Benötigt:</span><span class="note{{ ' ok' if studium.noten.aktuell.ok else '' }}">{{ studium.noten.benoetigt.note }}</span></li>
                 </ul>
             </div>
-            <div id="stats">
+            <div id="stats" class="card">
+                <h2>Statistik</h2>
                 <table>
                     <tr>
                         <th></th>
@@ -71,14 +91,14 @@
                         <th>ECTS {{ studium.stats.anzahl_ects }}</th>
                     </tr>
                     <tr>
-                        <th>Soll</th>
+                        <th>Soll</th> 
                         <td>{{ studium.stats.anzahl_kurse_soll }}</td>
                         <td>{{ studium.stats.anzahl_ects_soll }}</td>
                     </tr>
                     <tr>
                         <th>Ist</th>
-                        <td class="{{ 'ok' if studium.stats.kurse_ist.ok else '' }}">{{ studium.stats.kurse_ist.anzahl }}</td>
-                        <td class="{{ 'ok' if studium.stats.ects_ist.ok else '' }}">{{ studium.stats.ects_ist.anzahl }}</td>
+                        <td class="ist{{ ' ok' if studium.stats.kurse_ist.ok else '' }}">{{ studium.stats.kurse_ist.anzahl }}</td>
+                        <td class="ist{{ ' ok' if studium.stats.ects_ist.ok else '' }}">{{ studium.stats.ects_ist.anzahl }}</td>
                     </tr>
                 </table>
             </div>
@@ -88,63 +108,213 @@
     
 </body>
 <style>
-    html, body, *{
-        box-sizing: border-box;
-    }
+:root {
+    /* Base */
+    --bg-main: #0F172A;
+    --bg-card: #1E293B;
+    --border: #334155;
+    --text-main: #E2E8F0;
+    --text-secondary: #94A3B8;
 
-    #timeline{
+    /* Course states */
+    --course-done: #22C55E;
+    --course-active: #3B82F6;
+    --course-overdue: #EF4444;
+    --course-future: #64748B;
+
+    /* Timeline */
+    --timeline-past: #334155;
+    --timeline-future: #64748B;
+    --timeline-active: #F59E0B;
+    --timeline-semester: #8B5CF6;
+    
+    /* Exams */
+    --exam-overdue: #DC2626;
+    --exam-upcoming: #EAB308;
+
+    /* Progress */
+    --progress-good: #16A34A;
+    --progress-mid: #CA8A04;
+    --progress-bad: #DC2626;
+
+    /* Grades */
+    --grade-target: #A78BFA;
+    --grade-current: #60A5FA;
+    --grade-needed: #FB923C;
+}
+html {
+    background-color:var(--bg-main);
+    color:var(--text-main);
+    font-family: sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button {
+    display:inline-block;
+    width:1rem;
+    height:1rem;
+    color:var(--text-secondary);
+    background-color:transparent;
+    border:none;
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+#dashboard {
+    display:flex;
+    
+    #timeline {
         display:flex;
         align-items:stretch;
         width:40%;
-        height:1000px;
-        border:1px solid black;
+        border:1px solid var(--border);
+        margin-right: 1rem;
+
+        #datum {
+            width:1rem;
+            background-color:var(--course-future);
+            display:flex;
+            flex-direction: column;
+            height:100%;
+
+            div {
+                flex-shrink:0;
+                flex-basis:0;
+
+                &#vergangen{
+                    background-color:var(--course-done);
+                    border-bottom: var(--course-active);
+                }
+            }
+        }
+
+        #semesters {
+            width:1rem;
+            display:flex;
+            flex-direction: column;
+            background-color:var(--timeline-semester);
+            height:100%;
+            .semester{
+                flex-shrink: 0;
+                flex-basis:0;
+                border-top:1px solid var(--border);
+                text-align: center;
+                padding-top:.25rem;
+
+                &:first-child{
+                    border:none;
+                }
+            }
+        }
+
+        #kurse{
+            flex-grow:1;
+            display: flex;
+            flex-direction:column;
+            height:100%;
+
+            .kurs{
+                position: relative;
+                border: 1px solid var(--border);
+                padding: .25rem;
+                flex-shrink:0;
+                flex-basis:0;
+                overflow:hidden;
+
+                .status {
+                    position:absolute;
+                    top:0;
+                    right:0;
+                    height:100%;
+                    width:1rem;
+                    background-color: var(--course-future);
+                    
+                    &.faellig{
+                        background-color: var(--course-overdue);
+                    }
+                    &.fertig{
+                        background-color: var(--course-done);
+                    }
+                    &.aktiv{
+                        background-color: var(--course-active);
+                    }
+                }
+
+                .buttons {
+                    position:absolute;
+                    right:2rem;
+                    top:0;
+                }
+
+                :first-child{
+                    border:none;
+                }
+            }
+        }
     }
 
-    #datum{
-        width:1rem;
-        background-color:yellow;
-        display:flex;
-        flex-direction: column;
-    }
-    #datum .vergangen{
-        background-color:green;
-    }
-    .tag{
-        flex:1;
-    }
-    #verbleibend, #vergangen {
-        width:100%;
-        flex-grow: 0;
-        flex-shrink: 1;
-    }
-    #verbleibend{
-        background-color:blue;
-    }
+    #daten {
+        .card {
+            background-color: var(--bg-card);
+            padding:1rem;
+            margin-bottom:1rem;
 
-    #semesters{
-        width:1rem;
-        display:flex;
-        flex-direction: column;
-        background-color:red;
-    }
+            h2 {
+                margin-top:0;
+            }   
+        }
 
-    #kurse{
-        flex-grow:1;
-        display: flex;
-        flex-direction:column;
-    }
-    .kurs, .semester{
-        flex-shrink: 1;
-        flex-grow:0;
-        border-top:1px solid black;
-    }
-    .kurs:first-child, .semester:first-child{
-        border:none;
-    }
+        #todo {
+            #faellige_pruefungen {
+                color:var(--exam-overdue);
+            }
+            #naechste_pruefungen {
+                color:var(--exam-upcoming);
+            }
+        }
 
-    #dashboard{
-        display:flex;
+        #noten {
+            li {
+                display:flex;
+                span.label {
+                    display:block;
+                    width:5rem;
+                }
+                span.note {
+                    color: var(--progress-bad);
+                    &.ok {
+                        color: var(--progress-good);
+                    }
+                }
+            }
+        }
+
+        #stats {
+            table {
+                border-collapse: collapse;
+                td, th {
+                    padding:0.25rem;
+                    border: 1px solid var(--border);
+                    text-align: center;
+
+                    &.ist {
+                        color: var(--progress-bad);
+
+                        &.ok {
+                            color: var(var(--progress-good));
+                        }
+                    }
+                    
+                }
+            }
+        }
     }
+}
 </style>
 </html>
 

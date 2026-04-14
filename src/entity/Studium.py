@@ -126,6 +126,12 @@ class Studium:
         
         self.kurs(kurs_id).set_data(schwere, note, pruefung_datum)
         self._init_semester()
+    
+    def add_kurs(self, kurs_id: str, name: str, ects: int, schwere: int) -> None:
+        pass
+
+    def entferne_kurs(self, kurs_id: str) -> None:
+        pass
 
     def __str__(self):
         return self.name + "\n" + "\n".join([f"  {k}" for k in self.kurse])

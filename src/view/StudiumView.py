@@ -14,9 +14,13 @@ class StudiumView:
         self.verbleibende_tage = self.studium.verbleibende_tage(datum)
         self.kurse = [{
             'name': k.name,
+            'anzahl_tage': k.anzahl_tage(),
             'hoehe_rel': k.anzahl_tage(),
             'beginn': k.beginn.isoformat(),
-            'ende': k.ende.isoformat()
+            'ende': k.ende.isoformat(),
+            'ist_fertig': k.ist_fertig(),
+            'ist_faellig': k.ist_faellig(self.datum),
+            'ist_aktiv': k.ist_aktiv(self.datum)
         } for k in studium.get_kurse()]
 
         self.semester = [{
@@ -24,7 +28,6 @@ class StudiumView:
             'hoehe_rel': s.anzahl_tage()
         } for s in studium.semester]
 
-        self.tage = self.erzeuge_tage()
         self.faellige_pruefungen = self.erzeuge_faellige_pruefungen()
         self.naechste_pruefungen = self.erzeuge_naechste_pruefungen()
         self.noten = self.erzeuge_noten()
@@ -85,10 +88,6 @@ class StudiumView:
             'name': k.name,
             'faellig_in_tage': k.faellig_in_tagen(self.datum)
         } for k in self.studium.naechste_pruefungen(self.datum, 3)]
-
-    def erzeuge_tage(self) -> List[str]:
-         days = [self.studium.beginn + timedelta(days=i) for i in range(self.studium.anzahl_tage())]
-         return [d for d in map(lambda d: {'tag': d.isoformat(), 'vergangen': d < self.datum}, days)]
 
     def formatiere_note(self, note:float) -> str:
         return f"{note:.2f}".replace('.', ',')

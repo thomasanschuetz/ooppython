@@ -34,17 +34,19 @@ def create_course():
 
 if __name__ == "__main__":
 
-    kurse = [Kurs(str(k+1), f"kurs {k+1}", k//6 + 1, 3, 5) for k in range(32)]
+    kurse = [Kurs(str(k+1), f"kurs {k+1}", k//6 + 1, 3, 5) for k in range(15)]
     
     
-    kurse[0].schwere = 5
-    kurse[28].ects = 10
-    kurse[28].note = 6.0
-    kurse[29].ects = 10
-    kurse[30].ects = 10
-    kurse[31].ects = 10
-    studium = Studium("KI", date.today(), 43, 2.0, kurse)
-    studium_view = StudiumView(studium, date.today() + relativedelta(days=200))
+    kurse[0].schwere = 6
+    kurse[1].note = 3.0
+    kurse[12].ects = 10
+    kurse[13].ects = 10
+    kurse[14].ects = 10
+    kurse[12].schwere = 9
+    kurse[13].schwere = 9
+    kurse[14].schwere = 12
+    studium = Studium("KI", date.today(), 39, 2.0, kurse)
+    studium_view = StudiumView(studium, date.today() + relativedelta(days=250))
 
 
 

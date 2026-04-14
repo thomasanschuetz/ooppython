@@ -36,6 +36,15 @@ class Kurs:
     
     def faellig_in_tagen(self, datum: date) -> int:
         return (self.ende - datum).days
+    
+    def ist_fertig(self) -> bool:
+        return self.note is not None and self.note <= 4.0
+    
+    def ist_aktiv(self, datum) -> bool:
+        return (not self.ist_faellig(datum)) and (not self.ist_fertig()) and self.beginn <= datum and datum <= self.ende
+
+    def ist_faellig(self, datum: date) -> bool:
+        return (not self.ist_fertig()) and self.ende < datum
 
     def set_data(self, schwere:int, note:float|None, pruefung_datum: date|None) -> None:
         self.schwere = schwere
