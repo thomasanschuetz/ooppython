@@ -8,11 +8,13 @@ from typing import List
 class StudiumView:
     def __init__(self, studium:Studium, datum:date):
         self.studium = studium
+        self.name = studium.name
         self.datum = datum
         self.anzahl_tage_gesamt = self.studium.anzahl_tage()
         self.vergangene_tage = self.studium.vergangene_tage(datum)
         self.verbleibende_tage = self.studium.verbleibende_tage(datum)
         self.kurse = [{
+            'id': k.id,
             'name': k.name,
             'anzahl_tage': k.anzahl_tage(),
             'hoehe_rel': k.anzahl_tage(),
@@ -91,4 +93,7 @@ class StudiumView:
 
     def formatiere_note(self, note:float) -> str:
         return f"{note:.2f}".replace('.', ',')
+    
+    def __str__(self):
+        return f"{self.name}"
     

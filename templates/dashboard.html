@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard {{ studium_name }}</title>
+    <title>Dashboard {{ studium.name }}</title>
 </head>
 <body>
-    <h1>Dashboard {{ studium_name }} <button class="bearbeiten">&#9998;</button></h1>
+    <h1>Dashboard {{ studium.name }} <a href="/update_studium" class="button">&#9998;</a></h1>
     
     <div id="top"><button title="Neuer Kurs">&#x2795;</button></div>
     <div id="dashboard">
@@ -30,8 +30,17 @@
 
 
                     <div class="buttons">
-                        <button class="hoch">&#9650;</button>
-                        <button class="runter">&#9660;</button>
+                        
+                        <form action="/bewege_kurs" method="POST">
+                            <input type="hidden" name="kurs_id" value="{{kurs.id}}">
+                            <input type="hidden" name="richtung" value="hoch">
+                            <input type="submit" class="button" name="bewege_kurs" class="hoch" value="&#9650;"/>
+                        </form>
+                        <form action="/bewege_kurs" method="POST">
+                            <input type="hidden" name="kurs_id" value="{{kurs.id}}">
+                            <input type="hidden" name="richtung" value="runter">
+                            <input type="submit" class="button" name="bewege_kurs" class="runter" value="&#9660;"/>
+                        </form>
                         <button class="bearbeiten">&#9998;</button>
                         
                     </div>
@@ -152,13 +161,14 @@ html {
     box-sizing: border-box;
 }
 
-button {
+button, a.button, input[type=submit].button {
     display:inline-block;
     width:1rem;
     height:1rem;
     color:var(--text-secondary);
     background-color:transparent;
     border:none;
+    text-decoration:none;
 
     &:hover{
         cursor: pointer;

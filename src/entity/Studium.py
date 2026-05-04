@@ -1,6 +1,7 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
 import math
+import copy
 from typing import List, Dict
 from src.entity.Kurs import Kurs
 from src.entity.Semester import Semester
@@ -16,8 +17,7 @@ class Studium:
         self.beginn = beginn
         self.ziel_monate = ziel_monate
         self.ziel_note = ziel_note
-        # todo clone kurse: sollten nicht nach aussen geändert werden
-        self.kurse : Dict[str, Kurs] = {k.id: k for k in kurse}
+        self.kurse : Dict[str, Kurs] = {k.id: copy.deepcopy(k) for k in kurse}
         self._setze_kurs_zeitraeume()
         self.semester = self._init_semester()
 
@@ -59,6 +59,22 @@ class Studium:
             ))
                     
         return all_semester
+
+    def set_name(self, name: str) -> None:
+        #todo validation
+        self.name = name
+
+    def set_beginn(self, beginn: date) -> None:
+        #todo validation
+        self.beginn = beginn
+
+    def set_ziel_note(self, note: float) -> None:
+        #todo validation
+        self.ziel_note = note
+
+    def set_ziel_monate(self, monate: int) -> None:
+        #todo validation
+        self.monate = monate
 
     def ende(self) -> date:
         return self.beginn + relativedelta(months=self.ziel_monate) - relativedelta(days=1)
@@ -119,6 +135,25 @@ class Studium:
     def get_kurse(self) -> List[Kurs]:
         return [k for k in self.kurse.values()]
     
+    def bewege_kurs(self, kurs_id: str, hoch: bool) -> None:
+        kurs_ids = list(self.kurse.keys())
+        
+        if not kurs_id in kurs_ids:
+            return
+        
+        idx = kurs_ids.index(kurs_id)
+
+        if hoch:
+            if idx == 0:
+                return
+            kurs_ids[idx-1], kurs_ids[idx] = kurs_ids[idx], kurs_ids[idx-1]
+        else:
+            if idx == (len(kurs_ids) - 1):
+                return
+            kurs_ids[idx+1], kurs_ids[idx] = kurs_ids[idx], kurs_ids[idx+1]
+        
+        self.kurse = {key: self.kurse[key] for key in kurs_ids}
+
     def set_kurs_data(self, kurs_id:str, schwere:int, note:float|None, pruefung_datum: date|None) -> None:
         kurs = self.kurs(kurs_id)
         if kurs is None:
