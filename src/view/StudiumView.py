@@ -16,6 +16,8 @@ class StudiumView:
         self.kurse = [{
             'id': k.id,
             'name': k.name,
+            'schwere': k.schwere,
+            'ects': k.ects,
             'anzahl_tage': k.anzahl_tage(),
             'hoehe_rel': k.anzahl_tage(),
             'beginn': k.beginn.isoformat(),
@@ -93,6 +95,9 @@ class StudiumView:
 
     def formatiere_note(self, note:float) -> str:
         return f"{note:.2f}".replace('.', ',')
+    
+    def get_kurs(self, kurs_id: str) -> dict|None:
+        return next((kurs for kurs in self.kurse if kurs['id'] == kurs_id))
     
     def __str__(self):
         return f"{self.name}"

@@ -2,6 +2,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 import math
 import copy
+import uuid
 from typing import List, Dict
 from src.entity.Kurs import Kurs
 from src.entity.Semester import Semester
@@ -154,16 +155,18 @@ class Studium:
         
         self.kurse = {key: self.kurse[key] for key in kurs_ids}
 
-    def set_kurs_data(self, kurs_id:str, schwere:int, note:float|None, pruefung_datum: date|None) -> None:
+    def set_kurs_data(self, kurs_id:str, name: str, ects: int, schwere:int) -> None:
         kurs = self.kurs(kurs_id)
         if kurs is None:
-            return
+            raise ValueError(f"wrong kurs_id: {kurs_id}")
         
-        self.kurs(kurs_id).set_data(schwere, note, pruefung_datum)
+        self.kurs(kurs_id).set_data(name, ects, schwere)
         self._init_semester()
     
-    def add_kurs(self, kurs_id: str, name: str, ects: int, schwere: int) -> None:
-        pass
+    def add_kurs(self, name: str, ects: int, schwere: int) -> None:
+        id = uuid.uuid4().hex
+        self.kurse[id] = Kurs(id, name, schwere, ects)
+        self._setze_kurs_zeitraeume()
 
     def entferne_kurs(self, kurs_id: str) -> None:
         pass

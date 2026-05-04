@@ -62,26 +62,71 @@ def bewege_kurs() -> str:
 
     return redirect('/')
 
-def create_course():
-    return 'create_course'
+@app.route("/bearbeite_kurs", methods=["GET"])
+def get_bearbeite_kurs() -> str:
+
+    g = request.args
+    kurs_id = g.get('id')
+    kurs = studium_view.get_kurs(kurs_id)
+    #todo validation
+    return render_template("bearbeite_kurs.html", kurs=kurs)
+
+@app.route("/bearbeite_kurs", methods=["POST"])
+def post_bearbeite_kurs() -> str:
+    global studium_view
+
+    p = request.form
+    kurs_id = p.get('id')
+    name = p.get('name')
+    ects = int(p.get('ects'))
+    schwere = int(p.get('schwere'))
+    #todo validieren
+    studium.set_kurs_data(kurs_id, name, ects, schwere)
+    studium_repo.save(studium)
+    studium_view = StudiumView(studium, today) # set_studium um global unnötig zu machen
+
+    return redirect('/')
+
+
+@app.route("/erstelle_kurs", methods=["GET"])
+def get_erstelle_kurs() -> str:
+
+    return render_template("erstelle_kurs.html", kurs={'name': '', 'ects': 5, 'schwere': 3})
+
+@app.route("/erstelle_kurs", methods=["POST"])
+def post_erstelle_kurs() -> str:
+    global studium_view
+
+    p = request.form
+    name = p.get('name')
+    ects = int(p.get('ects'))
+    schwere = int(p.get('schwere'))
+    #todo validieren
+    studium.add_kurs(name, ects, schwere)
+    studium_repo.save(studium)
+    studium_view = StudiumView(studium, today) # set_studium um global unnötig zu machen
+
+    return redirect('/')
+
 
 
 if __name__ == "__main__":
 
-    kurse = [Kurs(str(k+1), f"kurs {k+1}", k//6 + 1, 3, 5) for k in range(15)]
-    
-    
-    # kurse[0].schwere = 6
-    # kurse[1].note = 3.0
-    # kurse[12].ects = 10
-    # kurse[13].ects = 10
-    # kurse[14].ects = 10
-    # kurse[12].schwere = 9
-    # kurse[13].schwere = 9
-    # kurse[14].schwere = 12
-    
     studium_repo = StudiumRepo('data/studium.pkl')
-    #studium = Studium("KI", date.today(), 39, 2.0, kurse)
+
+    kurse = [Kurs(str(k+1), f"kurs {k+1}", 3, 5) for k in range(15)]
+    kurse[0].schwere = 5
+    kurse[1].note = 3.0
+    kurse[12].ects = 10
+    kurse[13].ects = 10
+    kurse[14].ects = 10
+    kurse[12].schwere = 4
+    kurse[13].schwere = 4
+    kurse[14].schwere = 5
+    studium = Studium("KI", date.today(), 39, 2.0, kurse)
+
+
+    
     studium = studium_repo.load()
     
     studium_view = StudiumView(studium, today)

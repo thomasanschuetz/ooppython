@@ -6,7 +6,7 @@
 <body>
     <h1>Dashboard {{ studium.name }} <a href="/update_studium" class="button">&#9998;</a></h1>
     
-    <div id="top"><button title="Neuer Kurs">&#x2795;</button></div>
+    <div id="top"><a href="/erstelle_kurs" class="button" title="Neuer Kurs">&#x2795;</a></div>
     <div id="dashboard">
         
         <div id="timeline" style="width:40%">
@@ -41,7 +41,7 @@
                             <input type="hidden" name="richtung" value="runter">
                             <input type="submit" class="button" name="bewege_kurs" class="runter" value="&#9660;"/>
                         </form>
-                        <button class="bearbeiten">&#9998;</button>
+                        <a class="button" href="/bearbeite_kurs?id={{ kurs.id }}">&#9998;</a>
                         
                     </div>
 
@@ -259,6 +259,10 @@ button, a.button, input[type=submit].button {
                     position:absolute;
                     right:2rem;
                     top:0;
+
+                    form, a {
+                        display:inline;
+                    }
                 }
 
                 :first-child{
