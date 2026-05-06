@@ -24,7 +24,12 @@ class StudiumView:
             'ende': k.ende.isoformat(),
             'ist_fertig': k.ist_fertig(),
             'ist_faellig': k.ist_faellig(self.datum),
-            'ist_aktiv': k.ist_aktiv(self.datum)
+            'ist_aktiv': k.ist_aktiv(self.datum),
+            'note': self.formatiere_note(k.get_note()),
+            'noten': [str(note) for note in k.noten],
+            'noten-formatiert': [self.formatiere_note(note) for note in k.noten],
+            'zeige_note2': len(k.noten) >= 1,
+            'zeige_note3': len(k.noten) >= 2
         } for k in studium.get_kurse()]
 
         self.semester = [{
@@ -93,7 +98,9 @@ class StudiumView:
             'faellig_in_tage': k.faellig_in_tagen(self.datum)
         } for k in self.studium.naechste_pruefungen(self.datum, 3)]
 
-    def formatiere_note(self, note:float) -> str:
+    def formatiere_note(self, note:float|None) -> str:
+        if not note:
+            return ''
         return f"{note:.2f}".replace('.', ',')
     
     def get_kurs(self, kurs_id: str) -> dict|None:

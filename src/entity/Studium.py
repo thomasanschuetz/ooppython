@@ -93,16 +93,16 @@ class Studium:
         return len(self.kurse.values())
 
     def kurse_fertig(self) -> List[Kurs]:
-        return [k for k in filter(lambda k: k.note is not None, self.kurse.values())]
+        return [k for k in filter(lambda k: k.ist_fertig(), self.kurse.values())]
     
     def kurse_offen(self) -> List[Kurs]:
-        return [k for k in filter(lambda k: k.note is None, self.kurse.values())]
+        return [k for k in filter(lambda k: not k.ist_fertig(), self.kurse.values())]
         
     def kurse_soll(self, datum: date) -> List[Kurs]:
         return [k for k in filter(lambda k: k.ende is not None and k.ende < datum, self.kurse_offen())]
 
     def naechste_pruefungen(self, datum: date, max_kurse:int=3) -> List[Kurs]:    
-        return [k for k in filter(lambda k: k.note is None and datum <= k.ende, self.kurse.values())][:max_kurse]
+        return [k for k in filter(lambda k: not k.ist_fertig() and datum <= k.ende, self.kurse.values())][:max_kurse]
     
     def anzahl_ects(self) -> int:
         return sum([k.ects for k in self.kurse.values()])
@@ -119,7 +119,7 @@ class Studium:
         if not kurse_fertig:
             return None
         
-        return sum([k.note for k in kurse_fertig]) / len(kurse_fertig)
+        return sum([k.get_note() for k in kurse_fertig]) / len(kurse_fertig)
     
     def benoetigte_durchschnittsnote(self) -> float|None: # todo ects beachten
 
@@ -128,7 +128,7 @@ class Studium:
         if self.anzahl_kurse() == 0 or anzahl_kurse_offen == 0:
             return None
 
-        return (self.ziel_note * anzahl_kurse - sum([k.note for k in self.kurse_fertig()])) / len(self.kurse_offen())
+        return (self.ziel_note * anzahl_kurse - sum([k.get_note() for k in self.kurse_fertig()])) / len(self.kurse_offen())
 
     def kurs(self, kurs_id:str) -> Kurs|None:
         return self.kurse.get(kurs_id)
@@ -155,12 +155,12 @@ class Studium:
         
         self.kurse = {key: self.kurse[key] for key in kurs_ids}
 
-    def set_kurs_data(self, kurs_id:str, name: str, ects: int, schwere:int) -> None:
+    def set_kurs_data(self, kurs_id:str, name: str, ects: int, schwere:int, noten:List[float]) -> None:
         kurs = self.kurs(kurs_id)
         if kurs is None:
             raise ValueError(f"wrong kurs_id: {kurs_id}")
         
-        self.kurs(kurs_id).set_data(name, ects, schwere)
+        self.kurs(kurs_id).set_data(name, ects, schwere, noten)
         self._init_semester()
     
     def add_kurs(self, name: str, ects: int, schwere: int) -> None:

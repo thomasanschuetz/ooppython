@@ -46,14 +46,16 @@
                     </div>
 
                     {% if kurs.ist_faellig %}
-                        <div class="status faellig"></div>
+                        <div class="status faellig">
                     {% elif kurs.ist_fertig %}
-                        <div class="status fertig"></div>
+                        <div class="status fertig">
                     {% elif kurs.ist_aktiv %}
-                        <div class="status aktiv"></div>
+                        <div class="status aktiv">
                     {% else %}
-                        <div class="status"></div>
+                        <div class="status">
                     {% endif %}
+                        {{ kurs.note }}
+                    </div>
                 </div>
                 
                 {% endfor %}
@@ -241,7 +243,7 @@ button, a.button, input[type=submit].button {
                     top:0;
                     right:0;
                     height:100%;
-                    width:1rem;
+                    width:3rem;
                     background-color: var(--course-future);
                     
                     &.faellig{
@@ -257,7 +259,7 @@ button, a.button, input[type=submit].button {
 
                 .buttons {
                     position:absolute;
-                    right:2rem;
+                    right:4rem;
                     top:0;
 
                     form, a {

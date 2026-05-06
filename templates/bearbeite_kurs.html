@@ -16,6 +16,18 @@
         <label for="schwere">Schwere</label>
         <input type="number" name="schwere" min="1" max="5" required value="{{ kurs.schwere }}"/>
         
+        <br>
+        <label for="note1">Noten: </label>
+        <input type="number" name="note1" min="1" max="6" step="0.01" value="{{ kurs.noten[0] }}"/>
+         
+        {% if kurs.zeige_note2 %}
+            <input type="number" name="note2" min="1" max="6" step="0.01" value="{{ kurs.noten[1] }}"/>
+        {% endif %}
+        {% if kurs.zeige_note3 %}
+            <input type="number" name="note3" min="1" max="6" step="0.01" value="{{ kurs.noten[2] }}"/>
+        {% endif %}
+
+        <br>
         <input type="submit" name="speichern" value="Speichern"/>
         
     </form>

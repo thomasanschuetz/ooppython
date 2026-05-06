@@ -68,6 +68,7 @@ def get_bearbeite_kurs() -> str:
     g = request.args
     kurs_id = g.get('id')
     kurs = studium_view.get_kurs(kurs_id)
+
     #todo validation
     return render_template("bearbeite_kurs.html", kurs=kurs)
 
@@ -80,8 +81,22 @@ def post_bearbeite_kurs() -> str:
     name = p.get('name')
     ects = int(p.get('ects'))
     schwere = int(p.get('schwere'))
+        
+    noten = []
+    note1 = p.get('note1')
+    note2 = p.get('note2')
+    note3 = p.get('note3')
+    if note1:
+        noten.append(float(note1))
+        if note2:
+            noten.append(float(note2))
+            if note3:
+                noten.append(float(note3))
+    
     #todo validieren
-    studium.set_kurs_data(kurs_id, name, ects, schwere)
+    studium.set_kurs_data(kurs_id, name, ects, schwere, noten)
+    
+
     studium_repo.save(studium)
     studium_view = StudiumView(studium, today) # set_studium um global unnötig zu machen
 
