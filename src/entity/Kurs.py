@@ -1,65 +1,78 @@
+from dataclasses import dataclass, field
 from datetime import date
-from typing import List
+from src.entity.enums import KursSchwere, KursStatus
 
+@dataclass
 class Kurs:
+    id: str
+    name: str
+    ects: int
+    schwere: KursSchwere
+    noten: list = field(default_factory=list)
+    beginn: date|None = None
+    ende: date|None = None
 
-    def __init__(self,
-            id:str,     
-            name:str,
-            schwere:int,
-            ects:int,
-            beginn:date|None = None,
-            ende:date|None = None
-        ):
 
-        assert id != ""
-        assert schwere >=1 and schwere <=5
-
-        assert beginn is None or ende is None or beginn < ende
-
-        self.id = id
-        self.name = name
-        self.schwere = schwere
-        self.ects = ects
-        self.beginn = beginn
-        self.ende = ende
-        self.noten = []
-        
-    def anzahl_tage(self) -> int|None:
+    def get_status(self, datum: date) -> KursStatus:
         if self.beginn is None or self.ende is None:
+            return KursStatus.UNGEPLANT
+        
+        elif self.ist_fertig():
+            return KursStatus.FERTIG
+        
+        elif self._ist_faellig(datum):
+            return KursStatus.FAELLIG
+
+        elif self._ist_aktiv(datum): # muss nach ist_faellig bleiben, da faellig -> aktiv impliziert
+            return KursStatus.AKTIV
+        
+        else:
+            return KursStatus.OFFEN
+     
+
+    @property
+    def anzahl_tage(self) -> int|None:
+        if not self._hat_start_und_ende():
             return None
+        
         return (self.ende - self.beginn).days + 1
     
+
     def faellig_in_tagen(self, datum: date) -> int:
+        if not self._hat_start_und_ende(): 
+            return 0
+        
         return (self.ende - datum).days
-    
-    def ist_fertig(self) -> bool:
-        for note in self.noten:
-            if note <= 4.0:
-                return True
-            
-        return False
-    
-    def get_note(self) -> float|None:
-        if not self.noten:
-            return None
-        else:
-            return self.noten[-1]
     
     def kann_note_hinzufuegen(self) -> bool:
         return len(self.noten) < 3 and not self.ist_fertig()
     
-    def ist_aktiv(self, datum) -> bool:
+
+    def ist_fertig(self) -> bool:
+        """concept: Auch über den Status bestimmbar, aber dafür benötige ich das Datum, das ist manchmal nicht nötig"""
+        for note in self.noten:
+            if note <= 4.0:
+                return True
+
+    @property        
+    def note(self) -> None|float:
+        if not self.noten:
+            return None
+        
+        return self.noten[-1]
+        
+
+    def _hat_start_und_ende(self) -> bool:
+        return not(self.beginn is None or self.ende is None)
+
+
+    def _ist_aktiv(self, datum: date) -> bool:
+        if not self._hat_start_und_ende():
+            return False
         return (not self.ist_faellig(datum)) and (not self.ist_fertig()) and self.beginn <= datum and datum <= self.ende
 
-    def ist_faellig(self, datum: date) -> bool:
+
+    def _ist_faellig(self, datum: date) -> bool:
+        if not self._hat_start_und_ende():
+            return False
         return (not self.ist_fertig()) and self.ende < datum
-
-    def set_data(self, name: str, ects: int, schwere:int, noten: List[float]) -> None:
-        self.name = name
-        self.ects = ects
-        self.schwere = schwere
-        self.noten = noten
-
-    def __str__(self):
-        return f"{self.id}, {self.name}, {self.ects}, {self.schwere}, {self.beginn} - {self.ende}"

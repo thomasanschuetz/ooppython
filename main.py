@@ -1,26 +1,24 @@
-from src.entity.Studium import Studium
-from src.entity.Kurs import Kurs
-from src.view.StudiumView import StudiumView
-#from src.service.StudiumService import StudiumService
-from src.repo.StudiumRepo import StudiumRepo
+from src.repo.studium_repository import StudiumRepository
+from src.service.studium_planung_service import StudiumPlanungService
+from src.controller.dashboard_controller import DashboardController
+
+
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from flask import Flask, request, render_template, redirect
 app = Flask(__name__)
 
+today = date.today() + relativedelta(days=250)
 
-studium = None
-studium_view = None
-studium_service = None
-studium_repo = None
-today = date.today() + relativedelta(days=250) # todo change to today
+studium_planning_service = StudiumPlanungService()
+studium_repo = StudiumRepository('data/studium.pkl')
+dashboard_controller = DashboardController(studium_planning_service, studium_repo, today)
 
 
 @app.route("/")
 def dashboard() -> str:
-    print('rendering')
-    print(studium_view)
-    return render_template('dashboard.html', studium_name=studium.name, studium=studium_view)
+    studium_view = dashboard_controller.lade_dashboard_view()
+    return render_template('dashboard.html', studium=studium_view)
 
 @app.route("/update_studium", methods=["GET"])
 def get_update_studium() -> str:
@@ -40,10 +38,10 @@ def post_update_studium() -> str:
     ziel_note = float(p.get('ziel_note'))
     ziel_monate = int(p.get('ziel_monate'))
 
-    studium.set_name(name)
-    studium.set_beginn(beginn)
-    studium.set_ziel_monate(ziel_monate)
-    studium.set_ziel_note(ziel_note)
+    studium.name = name
+    studium.beginn = beginn
+    studium.ziel_monate = ziel_monate
+    studium.ziel_note = ziel_note
     studium_repo.save(studium)
     studium_view = StudiumView(studium, today) # set_studium um global unnötig zu machen
 
@@ -126,25 +124,4 @@ def post_erstelle_kurs() -> str:
 
 
 if __name__ == "__main__":
-
-    studium_repo = StudiumRepo('data/studium.pkl')
-
-    kurse = [Kurs(str(k+1), f"kurs {k+1}", 3, 5) for k in range(15)]
-    kurse[0].schwere = 5
-    kurse[1].note = 3.0
-    kurse[12].ects = 10
-    kurse[13].ects = 10
-    kurse[14].ects = 10
-    kurse[12].schwere = 4
-    kurse[13].schwere = 4
-    kurse[14].schwere = 5
-    studium = Studium("KI", date.today(), 39, 2.0, kurse)
-
-
-    
-    studium = studium_repo.load()
-    
-    studium_view = StudiumView(studium, today)
-    
-
     app.run(debug=True)
