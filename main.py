@@ -49,15 +49,12 @@ def post_update_studium() -> str:
 
 @app.route("/bewege_kurs", methods=["POST"])
 def bewege_kurs() -> str:
-    global studium_view
-
     p = request.form
+    
     kurs_id = p.get('kurs_id')
     hoch = p.get('richtung') == 'hoch'
-    studium.bewege_kurs(kurs_id, hoch)
-    studium_repo.save(studium)
-    studium_view = StudiumView(studium, today) # set_studium um global unnötig zu machen
 
+    dashboard_controller.verschiebe_kurs(kurs_id, hoch)
     return redirect('/')
 
 @app.route("/bearbeite_kurs", methods=["GET"])
@@ -65,15 +62,16 @@ def get_bearbeite_kurs() -> str:
 
     g = request.args
     kurs_id = g.get('id')
-    kurs = studium_view.get_kurs(kurs_id)
+    kurs_view = dashboard_controller.lade_kurs_view(kurs_id)
+    #todo validieren
+
 
     #todo validation
-    return render_template("bearbeite_kurs.html", kurs=kurs)
+    return render_template("bearbeite_kurs.html", kurs=kurs_view)
 
 @app.route("/bearbeite_kurs", methods=["POST"])
 def post_bearbeite_kurs() -> str:
-    global studium_view
-
+    
     p = request.form
     kurs_id = p.get('id')
     name = p.get('name')
@@ -92,33 +90,25 @@ def post_bearbeite_kurs() -> str:
                 noten.append(float(note3))
     
     #todo validieren
-    studium.set_kurs_data(kurs_id, name, ects, schwere, noten)
-    
-
-    studium_repo.save(studium)
-    studium_view = StudiumView(studium, today) # set_studium um global unnötig zu machen
+    dashboard_controller.aktualisiere_kurs(kurs_id, name, ects, schwere, noten)
 
     return redirect('/')
 
 
 @app.route("/erstelle_kurs", methods=["GET"])
 def get_erstelle_kurs() -> str:
-
     return render_template("erstelle_kurs.html", kurs={'name': '', 'ects': 5, 'schwere': 3})
 
 @app.route("/erstelle_kurs", methods=["POST"])
 def post_erstelle_kurs() -> str:
-    global studium_view
-
     p = request.form
     name = p.get('name')
     ects = int(p.get('ects'))
     schwere = int(p.get('schwere'))
     #todo validieren
-    studium.add_kurs(name, ects, schwere)
-    studium_repo.save(studium)
-    studium_view = StudiumView(studium, today) # set_studium um global unnötig zu machen
 
+    dashboard_controller.erstelle_kurs(name, ects, schwere)
+    
     return redirect('/')
 
 

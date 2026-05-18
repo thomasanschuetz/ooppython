@@ -1,10 +1,14 @@
 from datetime import date
+import uuid
+from typing import List
 
 from src.repo.studium_repository import StudiumRepository
 from src.service.studium_planung_service import StudiumPlanungService
 from src.entity.studium import Studium
 from src.entity.kurs import Kurs
 from src.view.studium_view import StudiumView
+from src.view.kurs_view import KursView
+
 
 class DashboardController:
 
@@ -29,7 +33,7 @@ class DashboardController:
         studium = Studium("KI", date.today(), 39, 2.0, kurse)
 
         #test code
-        #studium = self.repository.lade_studium()
+        # studium = self.repository.lade_studium()
 
         if studium is None:
             studium = Studium(date.today(), 'Mein Studium', 1.0, 36, [])
@@ -38,6 +42,11 @@ class DashboardController:
 
         return studium
     
+    def lade_kurs_view(self, kurs_id: str) -> KursView|None:
+        studium_view = self.lade_dashboard_view()
+        return studium_view.get_kurs(kurs_id)
+
+
     def lade_dashboard_view(self):
         studium = self.lade_studium()
         studium_view = StudiumView(
@@ -49,47 +58,25 @@ class DashboardController:
 
         return studium_view
 
-    def fuege_kurs_hinzu(self, kurs_id: str, name: str, ects: int, schwere: int) -> None:
-        """
-        Nimmt die Formulardaten aus Flask entgegen, erstellt das Objekt
-        und stößt die Kette (Struktur ändern -> Berechnen -> Speichern) an.
-        """
+    def erstelle_kurs(self, name: str, ects: int, schwere: int) -> None:
         studium = self.repository.lade_studium()
-        
-        # Neues Domain-Objekt erstellen
-        neuer_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere)
-        
-        # A) Struktur-Logik: Entity fügt sich selbst den Kurs hinzu
-        studium.kurs_hinzufuegen(neuer_kurs)
-        
-        # B) Prozess-Logik: Service berechnet die Termine für die neue Liste neu
+        neuer_kurs = Kurs(id=uuid.uuid4().hex, name=name, ects=ects, schwere=schwere)
+        studium.fuege_kurs_hinzu(neuer_kurs)
         self.planung_service.setze_kurs_zeitraeume(studium)
-        
-        # C) Datenpersistenz: Repository speichert den neuen Zustand
         self.repository.speichere_studium(studium)
 
-    def verschiebe_kurs_nach_oben(self, kurs_id: str) -> None:
-        """
-        Sorgt dafür, dass ein Kurs in der Reihenfolge eins nach oben rutscht.
-        """
+    def aktualisiere_kurs(self, kurs_id: str, name: str, ects: int, schwere: int, noten: List[float]) -> None:
         studium = self.repository.lade_studium()
-        
-        # A) Struktur-Logik: Entity tauscht die Plätze in ihrer verborgenen Liste
-        studium.kurs_nach_oben_verschieben(kurs_id)
-        
-        # B) Prozess-Logik: Service berechnet die Termine für die neue Reihenfolge neu
-        self.planung_service.initialisiere_kurs_zeitraeume(studium)
-        
-        # C) Speichern
+        neuer_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere)
+        studium.aktualisiere_kurs(neuer_kurs)
+        self.planung_service.setze_kurs_zeitraeume(studium)
         self.repository.speichere_studium(studium)
 
-    def verschiebe_kurs_nach_unten(self, kurs_id: str) -> None:
-        """
-        Das Gegenstück zum Verschieben nach oben.
-        """
-        studium = self.repository.lade_studium()
-        studium.kurs_nach_unten_verschieben(kurs_id)
-        self.planung_service.initialisiere_kurs_zeitraeume(studium)
+    def verschiebe_kurs(self, kurs_id: str, hoch: bool) -> None:
+        
+        studium = self.lade_studium()
+        studium.verschiebe_kurs(kurs_id, hoch)
+        self.planung_service.setze_kurs_zeitraeume(studium)
         self.repository.speichere_studium(studium)
 
     def fuege_pruefungsleistung_hinzu(self, kurs_id: str, note: float) -> None:

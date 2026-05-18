@@ -5,9 +5,9 @@ from src.entity.enums import KursSchwere, KursStatus
 @dataclass
 class Kurs:
     id: str
-    name: str
-    ects: int
-    schwere: KursSchwere
+    name: str = ''
+    ects: int = 5
+    schwere: KursSchwere = KursSchwere.DREI
     noten: list = field(default_factory=list)
     beginn: date|None = None
     ende: date|None = None

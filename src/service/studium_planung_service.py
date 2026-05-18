@@ -14,7 +14,7 @@ class StudiumPlanungService:
     
     def setze_kurs_zeitraeume(self, studium: Studium) -> None:
 
-        kurse = studium._kurse
+        kurse = studium.kurse
 
         if not kurse:
             return

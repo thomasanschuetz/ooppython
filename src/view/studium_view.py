@@ -6,6 +6,7 @@ from src.entity.kurs import Kurs
 from src.entity.semester import Semester
 from src.entity.enums import KursStatus
 from src.entity.studium_statistik import StudiumStatistik
+from src.view.kurs_view import KursView
 
 class StudiumView:
     def __init__(self, studium:Studium, statistik: StudiumStatistik, semester: List[Semester], datum:date):
@@ -50,24 +51,23 @@ class StudiumView:
 
             status = k.get_status(self.datum)
 
-            self.kurse.append({
-                'id': k.id,
-                'name': k.name,
-                'schwere': k.schwere,
-                'ects': k.ects,
-                'anzahl_tage': k.anzahl_tage,
-                'hoehe_rel': k.anzahl_tage,
-                'beginn': k.beginn.isoformat(),
-                'ende': k.ende.isoformat(),
-                'ist_fertig': status == KursStatus.FERTIG,
-                'ist_faellig': status == KursStatus.FAELLIG,
-                'ist_aktiv': status == KursStatus.AKTIV,
-                'note': self.formatiere_note(k.note),
-                'noten': [str(note) for note in k.noten],
-                'noten-formatiert': [self.formatiere_note(note) for note in k.noten],
-                'zeige_note2': len(k.noten) >= 1,
-                'zeige_note3': len(k.noten) >= 2
-            })
+            self.kurse.append(KursView(
+                id = k.id,
+                name = k.name,
+                schwere = k.schwere,
+                ects = k.ects,
+                anzahl_tage = k.anzahl_tage,
+                hoehe_rel = k.anzahl_tage,
+                beginn = k.beginn.isoformat(),
+                ende = k.ende.isoformat(),
+                ist_fertig = status == KursStatus.FERTIG,
+                ist_faellig = status == KursStatus.FAELLIG,
+                ist_aktiv = status == KursStatus.AKTIV,
+                note = self.formatiere_note(k.note),
+                noten = [self.formatiere_note(note) for note in k.noten],
+                zeige_note2 = len(k.noten) >= 1,
+                zeige_note3 = len(k.noten) >= 2
+            ))
 
     def erzeuge_noten(self):
         ziel_note = self.studium.ziel_note
@@ -116,8 +116,8 @@ class StudiumView:
             return ''
         return f"{note:.2f}".replace('.', ',')
     
-    def get_kurs(self, kurs_id: str) -> dict|None:
-        return next((kurs for kurs in self.kurse if kurs['id'] == kurs_id))
+    def get_kurs(self, kurs_id: str) -> KursView|None:
+        return next((kurs for kurs in self.kurse if kurs.id == kurs_id), None)
     
     def __str__(self):
         return f"{self.name}"
