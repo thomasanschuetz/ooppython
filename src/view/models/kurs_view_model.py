@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from typing import List
 
 @dataclass
-class KursView:
+class KursViewModel:
+    """View model for course information"""
     id: str
     name: str
     schwere: str

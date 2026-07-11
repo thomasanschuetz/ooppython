@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import Enum, IntEnum
 
-class KursSchwere(Enum):
+class KursSchwere(IntEnum):
     EINS = 1
     ZWEI = 2
     DREI = 3

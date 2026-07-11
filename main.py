@@ -1,3 +1,9 @@
+# weiter mit studium, kurs aktualisieren
+#  - validierung in controller, main übergibt nur parameter
+#  - note eintragen mit eigenem icon
+
+
+
 from src.repo.studium_repository import StudiumRepository
 from src.service.studium_planung_service import StudiumPlanungService
 from src.controller.dashboard_controller import DashboardController
@@ -17,11 +23,15 @@ dashboard_controller = DashboardController(studium_planning_service, studium_rep
 
 @app.route("/")
 def dashboard() -> str:
-    studium_view = dashboard_controller.lade_dashboard_view()
+    studium_view = dashboard_controller.lade_studium_view()
     return render_template('dashboard.html', studium=studium_view)
 
 @app.route("/update_studium", methods=["GET"])
 def get_update_studium() -> str:
+
+    studium_view_model = dashboard_controller.lade_studium_view()
+    studium = dashboard_controller.lade_studium()
+    
     return render_template('update_studium.html', 
         name=studium.name,
         beginn=studium.beginn.isoformat(),
@@ -30,7 +40,6 @@ def get_update_studium() -> str:
     )
 @app.route("/update_studium", methods=["POST"])
 def post_update_studium() -> str:
-    global studium_view
     #todo validieren
     p = request.form
     name = p.get('name')
@@ -38,12 +47,12 @@ def post_update_studium() -> str:
     ziel_note = float(p.get('ziel_note'))
     ziel_monate = int(p.get('ziel_monate'))
 
+    studium = dashboard_controller.lade_studium()
     studium.name = name
     studium.beginn = beginn
     studium.ziel_monate = ziel_monate
     studium.ziel_note = ziel_note
     studium_repo.save(studium)
-    studium_view = StudiumView(studium, today) # set_studium um global unnötig zu machen
 
     return redirect('/')
 

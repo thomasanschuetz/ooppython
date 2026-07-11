@@ -23,8 +23,7 @@ class Studium:
 
     @property
     def kurse(self) -> Iterator[Kurs]:
-        for kurs in self._kurse:
-            yield kurs
+        return self._kurse
     
     @property
     def anzahl_kurse(self) -> int:

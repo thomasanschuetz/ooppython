@@ -6,8 +6,9 @@ from src.repo.studium_repository import StudiumRepository
 from src.service.studium_planung_service import StudiumPlanungService
 from src.entity.studium import Studium
 from src.entity.kurs import Kurs
-from src.view.studium_view import StudiumView
-from src.view.kurs_view import KursView
+from src.view.transformers.studium_transformer import StudiumTransformer
+from src.view.models.studium_view_model import StudiumViewModel
+from src.view.models.kurs_view_model import KursViewModel
 
 
 class DashboardController:
@@ -16,24 +17,27 @@ class DashboardController:
         self.planung_service = planung_service
         self.repository = repository
         self.datum = datum
+        self.studium_transformer = StudiumTransformer()
 
     def lade_studium(self) -> Studium:
+        
+        studium = self.repository.lade_studium()
 
         #todo remove test code:
-        kurse = [Kurs(str(k+1), f"kurs {k+1}", 3, 5) for k in range(15)]
-        kurse[0].schwere = 5
-        kurse[1].noten = [3.0]
-        kurse[12].ects = 10
-        kurse[13].ects = 10
-        kurse[14].ects = 10
-        kurse[12].schwere = 4
-        kurse[13].schwere = 4
-        kurse[14].schwere = 5
+        # from src.entity.enums import KursSchwere
+        # kurse = [Kurs(str(k+1), f"kurs {k+1}", 3, KursSchwere.DREI) for k in range(15)]
+        # kurse[0].schwere = KursSchwere.FUENF
+        # kurse[1].noten = [3.0]
+        # kurse[12].ects = 10
+        # kurse[13].ects = 10
+        # kurse[14].ects = 10
+        # kurse[12].schwere = KursSchwere.VIER
+        # kurse[13].schwere = KursSchwere.VIER
+        # kurse[14].schwere = KursSchwere.FUENF
 
-        studium = Studium("KI", date.today(), 39, 2.0, kurse)
-
+        # studium = Studium("KI", date.today(), 39, 2.0, kurse)
         #test code
-        # studium = self.repository.lade_studium()
+
 
         if studium is None:
             studium = Studium(date.today(), 'Mein Studium', 1.0, 36, [])
@@ -42,21 +46,24 @@ class DashboardController:
 
         return studium
     
-    def lade_kurs_view(self, kurs_id: str) -> KursView|None:
-        studium_view = self.lade_dashboard_view()
-        return studium_view.get_kurs(kurs_id)
+    def lade_kurs_view(self, kurs_id: str) -> KursViewModel|None:
+        studium_view_model = self.lade_studium_view()
+        return next((kurs for kurs in studium_view_model.kurse if kurs.id == kurs_id), None)
 
 
-    def lade_dashboard_view(self):
+    def lade_studium_view(self) -> StudiumViewModel:
         studium = self.lade_studium()
-        studium_view = StudiumView(
-            studium,
-            self.planung_service.get_studium_statistik(studium, self.datum),
-            self.planung_service.get_semester(studium),
-            self.datum
+        statistik = self.planung_service.get_studium_statistik(studium, self.datum)
+        semester = self.planung_service.get_semester(studium)
+        
+        studium_view_model = self.studium_transformer.transform(
+            studium=studium,
+            statistik=statistik,
+            semester_list=semester,
+            datum=self.datum
         )
 
-        return studium_view
+        return studium_view_model
 
     def erstelle_kurs(self, name: str, ects: int, schwere: int) -> None:
         studium = self.repository.lade_studium()
