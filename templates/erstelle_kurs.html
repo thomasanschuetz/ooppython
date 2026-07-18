@@ -2,9 +2,11 @@
 <html>
 <head>
     <title>Kurs erstellen</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
     <h1>Kurs erstellen</h1>
+    <a href="/" class="button">Zurück</a>
     <form action="/erstelle_kurs" method="POST">
         <label for="name">Name</label>
         <input type="text" name="name" required value="{{ kurs.name }}"/>
@@ -15,7 +17,7 @@
         <label for="schwere">Schwere</label>
         <input type="number" name="schwere" min="1" max="5" required value="{{ kurs.schwere }}"/>
         
-        <input type="submit" name="speichern" value="Speichern"/>
+        <input type="submit" value="Speichern"/>
         
     </form>
 </body>

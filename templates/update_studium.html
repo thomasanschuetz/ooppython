@@ -2,9 +2,11 @@
 <html>
 <head>
     <title>Studium bearbeiten</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
     <h1>Studium bearbeiten</h1>
+    <a href="/" class="button">Zurück</a>
     <form action="/update_studium" method="POST">
         <label for="name">Name</label>
         <input type="text" name="name" required value="{{ name }}"/>
@@ -15,7 +17,7 @@
         <label for="ziel_monate">Ziel-Monate</label>
         <input type="number" name="ziel_monate" min="1" max="120" required value="{{ ziel_monate }}"/>
         
-        <input type="submit" name="speichern" value="Speichern"/>
+        <input type="submit" value="Speichern"/>
         
     </form>
 </body>

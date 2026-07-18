@@ -2,9 +2,11 @@
 <html>
 <head>
     <title>Kurs bearbeiten</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
     <h1>Kurs bearbeiten</h1>
+    <a href="/" class="button">Zurück</a>
     <form action="/bearbeite_kurs" method="POST">
         <input type="hidden" name="id" value="{{ kurs.id }}"/>
         <label for="name">Name</label>
@@ -28,7 +30,7 @@
         {% endif %}
 
         <br>
-        <input type="submit" name="speichern" value="Speichern"/>
+        <input type="submit" value="Speichern"/>
         
     </form>
 </body>

@@ -20,10 +20,10 @@ class Kurs:
         elif self.ist_fertig():
             return KursStatus.FERTIG
         
-        elif self._ist_faellig(datum):
+        elif self.ist_faellig(datum):
             return KursStatus.FAELLIG
 
-        elif self._ist_aktiv(datum): # muss nach ist_faellig bleiben, da faellig -> aktiv impliziert
+        elif self.ist_aktiv(datum): # muss nach ist_faellig bleiben, da faellig -> aktiv impliziert
             return KursStatus.AKTIV
         
         else:
@@ -66,13 +66,13 @@ class Kurs:
         return not(self.beginn is None or self.ende is None)
 
 
-    def _ist_aktiv(self, datum: date) -> bool:
+    def ist_aktiv(self, datum: date) -> bool:
         if not self._hat_start_und_ende():
             return False
         return (not self.ist_faellig(datum)) and (not self.ist_fertig()) and self.beginn <= datum and datum <= self.ende
 
 
-    def _ist_faellig(self, datum: date) -> bool:
+    def ist_faellig(self, datum: date) -> bool:
         if not self._hat_start_und_ende():
             return False
         return (not self.ist_fertig()) and self.ende < datum

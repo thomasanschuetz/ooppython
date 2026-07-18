@@ -52,7 +52,7 @@ def post_update_studium() -> str:
     studium.beginn = beginn
     studium.ziel_monate = ziel_monate
     studium.ziel_note = ziel_note
-    studium_repo.save(studium)
+    studium_repo.speichere_studium(studium)
 
     return redirect('/')
 
