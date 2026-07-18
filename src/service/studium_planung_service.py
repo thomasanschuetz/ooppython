@@ -74,6 +74,7 @@ class StudiumPlanungService:
 
 
     def kurse_soll(self, studium: Studium, datum: date) -> List[Kurs]:
+        kurse = ([k for k in studium.kurse])
         return [k for k in filter(lambda k: k.get_status(datum) in [KursStatus.FERTIG, KursStatus.FAELLIG], studium.kurse)]
 
 

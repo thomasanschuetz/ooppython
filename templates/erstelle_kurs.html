@@ -7,6 +7,15 @@
 <body>
     <h1>Kurs erstellen</h1>
     <a href="/" class="button">Zurück</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="errors">
+                {% for category, message in messages %}
+                    <div class="error">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
     <form action="/erstelle_kurs" method="POST">
         <label for="name">Name</label>
         <input type="text" name="name" required value="{{ kurs.name }}"/>
@@ -15,7 +24,7 @@
         <input type="number" name="ects" min="1" max="20" required value="{{ kurs.ects }}"/>
         
         <label for="schwere">Schwere</label>
-        <input type="number" name="schwere" min="1" max="5" required value="{{ kurs.schwere }}"/>
+        <input type="number" name="schwere" min="{{ KursSchwere.EINS.value }}" max="{{ KursSchwere.FUENF.value }}" required value="{{ kurs.schwere }}"/>
         
         <input type="submit" value="Speichern"/>
         

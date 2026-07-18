@@ -46,7 +46,7 @@ class Kurs:
     
     def kann_note_hinzufuegen(self) -> bool:
         return len(self.noten) < 3 and not self.ist_fertig()
-    
+   
 
     def ist_fertig(self) -> bool:
         """concept: Auch über den Status bestimmbar, aber dafür benötige ich das Datum, das ist manchmal nicht nötig"""

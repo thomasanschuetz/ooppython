@@ -40,7 +40,7 @@ class DashboardController:
 
 
         if studium is None:
-            studium = Studium(date.today(), 'Mein Studium', 1.0, 36, [])
+            studium = Studium('Mein Studium', date.today(), 1.0, 36, [])
         
         self.planung_service.setze_kurs_zeitraeume(studium)
 
@@ -66,14 +66,14 @@ class DashboardController:
         return studium_view_model
 
     def erstelle_kurs(self, name: str, ects: int, schwere: int) -> None:
-        studium = self.repository.lade_studium()
+        studium = self.lade_studium()
         neuer_kurs = Kurs(id=uuid.uuid4().hex, name=name, ects=ects, schwere=schwere)
         studium.fuege_kurs_hinzu(neuer_kurs)
         self.planung_service.setze_kurs_zeitraeume(studium)
         self.repository.speichere_studium(studium)
 
     def aktualisiere_kurs(self, kurs_id: str, name: str, ects: int, schwere: int, noten: List[float]) -> None:
-        studium = self.repository.lade_studium()
+        studium = self.lade_studium()
         neuer_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere)
         studium.aktualisiere_kurs(neuer_kurs)
         self.planung_service.setze_kurs_zeitraeume(studium)
@@ -85,21 +85,3 @@ class DashboardController:
         studium.verschiebe_kurs(kurs_id, hoch)
         self.planung_service.setze_kurs_zeitraeume(studium)
         self.repository.speichere_studium(studium)
-
-    def fuege_pruefungsleistung_hinzu(self, kurs_id: str, note: float) -> None:
-        """
-        Fügt einem bestimmten Kurs eine Note hinzu und fängt Business-Rule-Fehler ab.
-        """
-        studium = self.repository.lade_studium()
-        
-        # Hilfsmethode der Entity nutzen, um den richtigen Kurs zu greifen
-        kurs = studium.finde_kurs_per_id(kurs_id)
-        
-        if kurs:
-            # Die Entity Kurs prüft selbst intern: "Habe ich schon 3 Prüfungen?"
-            # Falls ja, wirft sie eine Exception, die bis zu Flask hochfliegt
-            kurs.pruefung_hinzufuegen(Pruefungsleistung(note=note))
-            
-            # Da sich an den Kurs-Zeiträumen nichts ändert, müssen wir hier 
-            # den zeitlichen Planungsservice nicht zwingend aufrufen.
-            self.repository.speichere_studium(studium)

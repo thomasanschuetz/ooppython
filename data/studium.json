@@ -1,0 +1,17 @@
+{
+    "name": "Mein Studium",
+    "beginn": "2026-07-18",
+    "ziel_note": 1.0,
+    "ziel_monate": 36,
+    "kurse": [
+        {
+            "id": "0644d48b81524f1b93dfb7289fdf0644",
+            "name": "foo",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-07-18",
+            "ende": "2029-07-17"
+        }
+    ]
+}
