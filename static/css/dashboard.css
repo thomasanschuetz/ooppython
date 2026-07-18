@@ -54,7 +54,7 @@ html {
 
 body {
     padding: 1rem;
-    max-width: 800px;
+    max-width: 70rem;
     margin: 0 auto;
 }
 
@@ -139,11 +139,14 @@ input[type="submit"]:hover {
 
 #dashboard {
     display:flex;    
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
 
     #timeline {
         display:flex;
         align-items:stretch;
-        width:40%;
+        flex: 1;
         border:1px solid var(--border);
         margin-right: 1rem;
 
@@ -235,6 +238,8 @@ input[type="submit"]:hover {
     }
 
     #daten {
+        width: 20rem;
+        padding-left: 1rem;
         .card {
             background-color: var(--bg-card);
             padding:1rem;
