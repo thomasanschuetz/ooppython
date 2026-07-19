@@ -300,7 +300,7 @@ input[type="submit"]:hover {
                         color: var(--progress-bad);
 
                         &.ok {
-                            color: var(var(--progress-good));
+                            color: var(--progress-good);
                         }
                     }
                     
