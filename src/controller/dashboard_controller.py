@@ -23,22 +23,6 @@ class DashboardController:
         
         studium = self.repository.lade_studium()
 
-        #todo remove test code:
-        # from src.entity.enums import KursSchwere
-        # kurse = [Kurs(str(k+1), f"kurs {k+1}", 3, KursSchwere.DREI) for k in range(15)]
-        # kurse[0].schwere = KursSchwere.FUENF
-        # kurse[1].noten = [3.0]
-        # kurse[12].ects = 10
-        # kurse[13].ects = 10
-        # kurse[14].ects = 10
-        # kurse[12].schwere = KursSchwere.VIER
-        # kurse[13].schwere = KursSchwere.VIER
-        # kurse[14].schwere = KursSchwere.FUENF
-
-        # studium = Studium("KI", date.today(), 39, 2.0, kurse)
-        #test code
-
-
         if studium is None:
             studium = Studium('Mein Studium', date.today(), 1.0, 36, [])
         
@@ -56,7 +40,7 @@ class DashboardController:
         statistik = self.planung_service.get_studium_statistik(studium, self.datum)
         semester = self.planung_service.get_semester(studium)
         
-        studium_view_model = self.studium_transformer.transform(
+        studium_view_model = self.studium_transformer.transformiere(
             studium=studium,
             statistik=statistik,
             semester_list=semester,

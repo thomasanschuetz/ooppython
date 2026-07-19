@@ -13,7 +13,6 @@ from src.controller.dashboard_controller import DashboardController
 from src.validation.validator import Validator
 from src.entity.enums import KursSchwere
 
-
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from flask import Flask, request, render_template, redirect, flash
@@ -52,7 +51,7 @@ def post_update_studium() -> str:
     ziel_note = p.get('ziel_note')
     ziel_monate = p.get('ziel_monate')
 
-    errors = Validator.validate_studium(name, beginn, float(ziel_note) if ziel_note else None, int(ziel_monate) if ziel_monate else None)
+    errors = Validator.validiere_studium(name, beginn, float(ziel_note) if ziel_note else None, int(ziel_monate) if ziel_monate else None)
     if errors:
         for error in errors:
             flash(error, 'error')
@@ -111,8 +110,8 @@ def post_bearbeite_kurs() -> str:
             if note3:
                 noten.append(float(note3))
     
-    errors = Validator.validate_kurs(name, int(ects) if ects else None, int(schwere) if schwere else None)
-    errors.extend(Validator.validate_noten(noten))
+    errors = Validator.validiere_kurs(name, int(ects) if ects else None, int(schwere) if schwere else None)
+    errors.extend(Validator.validiere_noten(noten))
     if errors:
         for error in errors:
             flash(error, 'error')
@@ -135,7 +134,7 @@ def post_erstelle_kurs() -> str:
     ects = p.get('ects')
     schwere = p.get('schwere')
 
-    errors = Validator.validate_kurs(name, int(ects) if ects else None, int(schwere) if schwere else None)
+    errors = Validator.validiere_kurs(name, int(ects) if ects else None, int(schwere) if schwere else None)
     if errors:
         for error in errors:
             flash(error, 'error')

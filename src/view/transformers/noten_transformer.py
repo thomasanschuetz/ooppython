@@ -1,15 +1,11 @@
-from src.view.models.grade_view_model import GradeViewModel
+from src.view.models.noten_view_model import NotenViewModel
 from src.view.transformers.base_transformer import BaseTransformer
 
-class GradeTransformer(BaseTransformer):
-    """Transformer for grade/note information to GradeViewModel"""
-    
+class NotenTransformer(BaseTransformer):
     def transform(self, ziel_note: float, durchnitt_note: float | None, 
-                 benoetigt_note: float | None) -> GradeViewModel:
-        """Transform grade information to GradeViewModel"""
-        
+                 benoetigt_note: float | None) -> NotenViewModel:
         if durchnitt_note is None:
-            return GradeViewModel(
+            return NotenViewModel(
                 ziel=self.formatiere_note(ziel_note),
                 aktuell={
                     'note': 'n.a.',
@@ -21,7 +17,7 @@ class GradeTransformer(BaseTransformer):
                 }
             )
         
-        return GradeViewModel(
+        return NotenViewModel(
             ziel=self.formatiere_note(ziel_note),
             aktuell={
                 'note': self.formatiere_note(durchnitt_note),

@@ -1,7 +1,7 @@
 {
     "name": "Mein Studium",
     "beginn": "2026-07-18",
-    "ziel_note": 1.0,
+    "ziel_note": 3.0,
     "ziel_monate": 36,
     "kurse": [
         {
@@ -21,10 +21,7 @@
             "name": "bar",
             "ects": 5,
             "schwere": 3,
-            "noten": [
-                5.0,
-                4.0
-            ],
+            "noten": [],
             "beginn": "2028-01-17",
             "ende": "2029-07-17"
         }

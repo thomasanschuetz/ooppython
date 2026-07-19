@@ -2,10 +2,7 @@ from src.entity.studium_statistik import StudiumStatistik
 from src.view.models.stats_view_model import StatsViewModel
 
 class StatsTransformer:
-    """Transformer for StudiumStatistik to StatsViewModel"""
-    
-    def transform(self, statistik: StudiumStatistik, ziel_note: float) -> StatsViewModel:
-        """Transform StudiumStatistik to StatsViewModel"""
+    def transformiere(self, statistik: StudiumStatistik) -> StatsViewModel:
         anzahl_kurse_soll = statistik.anzahl_kurse_soll
         anzahl_kurse_ist = statistik.anzahl_kurse_ist
         anzahl_ects_soll = statistik.anzahl_ects_soll

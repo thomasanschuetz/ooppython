@@ -2,7 +2,7 @@ from src.entity.enums import KursSchwere
 
 class Validator:
     @staticmethod
-    def validate_studium(name, beginn, ziel_note, ziel_monate):
+    def validiere_studium(name, beginn, ziel_note, ziel_monate):
         errors = []
         if not name or len(name.strip()) == 0:
             errors.append("Name ist erforderlich.")
@@ -15,7 +15,7 @@ class Validator:
         return errors
 
     @staticmethod
-    def validate_kurs(name, ects, schwere):
+    def validiere_kurs(name, ects, schwere):
         errors = []
         if not name or len(name.strip()) == 0:
             errors.append("Name ist erforderlich.")
@@ -26,7 +26,7 @@ class Validator:
         return errors
 
     @staticmethod
-    def validate_noten(noten) -> list:
+    def validiere_noten(noten) -> list:
         errors = []
         for note in noten:
             if note is not None and (note < 1 or note > 6):
@@ -34,7 +34,7 @@ class Validator:
                 break
         return errors
     
-    def validate_note(note) -> list:
+    def validiere_note(note) -> list:
         errors = []
         if note < 1 or note > 6:
             errors.append(f"Note muss zwischen 1 und 6 liegen.")

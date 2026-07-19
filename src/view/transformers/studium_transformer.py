@@ -7,23 +7,18 @@ from src.view.models.studium_view_model import StudiumViewModel
 from src.view.models.semester_view_model import SemesterViewModel
 from src.view.transformers.kurs_transformer import KursTransformer
 from src.view.transformers.stats_transformer import StatsTransformer
-from src.view.transformers.grade_transformer import GradeTransformer
-from src.view.transformers.exam_transformer import ExamTransformer
+from src.view.transformers.noten_transformer import NotenTransformer
+from src.view.transformers.pruefung_transformer import PruefungTransformer
 
 class StudiumTransformer:
-    """Main transformer for Studium entities to StudiumViewModel"""
-    
     def __init__(self):
         self.kurs_transformer = KursTransformer()
         self.stats_transformer = StatsTransformer()
-        self.grade_transformer = GradeTransformer()
-        self.exam_transformer = ExamTransformer()
+        self.grade_transformer = NotenTransformer()
+        self.exam_transformer = PruefungTransformer()
     
-    def transform(self, studium: Studium, statistik: StudiumStatistik,
+    def transformiere(self, studium: Studium, statistik: StudiumStatistik,
                  semester_list: List[Semester], datum: date) -> StudiumViewModel:
-        """Transform Studium and related entities to StudiumViewModel"""
-        
-        # Transform semester
         semester_view_models = [
             SemesterViewModel(
                 name=str(s.no),
@@ -32,17 +27,15 @@ class StudiumTransformer:
             for s in semester_list
         ]
         
-        # Transform courses
         kurs_view_models = [
             self.kurs_transformer.transform(k, datum)
             for k in studium.kurse
         ]
         
-        # Transform exams
-        faellige_pruefungen = self.exam_transformer.transform_faellige_pruefungen(
+        faellige_pruefungen = self.exam_transformer.transformiere_faellige_pruefungen(
             list(studium.kurse), datum
         )
-        naechste_pruefungen = self.exam_transformer.transform_naechste_pruefungen(
+        naechste_pruefungen = self.exam_transformer.transformiere_naechste_pruefungen(
             list(studium.kurse), datum
         )
         
@@ -54,9 +47,8 @@ class StudiumTransformer:
         )
         
         # Transform stats
-        stats_view_model = self.stats_transformer.transform(
-            statistik=statistik,
-            ziel_note=studium.ziel_note
+        stats_view_model = self.stats_transformer.transformiere(
+            statistik=statistik
         )
         
         return StudiumViewModel(
