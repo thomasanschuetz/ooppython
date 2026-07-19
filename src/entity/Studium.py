@@ -45,7 +45,7 @@ class Studium:
         if idx is None:
             raise ValueError(f"Kurs mit id {kurs.id} nicht gefunden.")
         
-        self._kurse[idx] = Kurs
+        self._kurse[idx] = kurs
 
     
     def verschiebe_kurs(self, kurs_id: str, hoch: bool) -> None:

@@ -9,8 +9,23 @@
             "name": "foo",
             "ects": 5,
             "schwere": 3,
-            "noten": [],
+            "noten": [
+                5.0,
+                2.0
+            ],
             "beginn": "2026-07-18",
+            "ende": "2028-01-16"
+        },
+        {
+            "id": "3cfc7b88bfef40a18cbdd04444d372e0",
+            "name": "bar",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                5.0,
+                4.0
+            ],
+            "beginn": "2028-01-17",
             "ende": "2029-07-17"
         }
     ]

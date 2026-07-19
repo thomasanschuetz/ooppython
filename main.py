@@ -1,6 +1,9 @@
 # weiter mit studium, kurs aktualisieren
+#  - generiertes in deutsch übersetzen
 #  - validierung in controller, main übergibt nur parameter
 #  - note eintragen mit eigenem icon
+#  - noten nur eintragen, wenn nicht schon bestanden
+# - buttons schick machen
 
 
 

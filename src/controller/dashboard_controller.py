@@ -74,7 +74,7 @@ class DashboardController:
 
     def aktualisiere_kurs(self, kurs_id: str, name: str, ects: int, schwere: int, noten: List[float]) -> None:
         studium = self.lade_studium()
-        neuer_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere)
+        neuer_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere, noten=noten)
         studium.aktualisiere_kurs(neuer_kurs)
         self.planung_service.setze_kurs_zeitraeume(studium)
         self.repository.speichere_studium(studium)

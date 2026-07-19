@@ -24,7 +24,10 @@ class KursTransformer(BaseTransformer):
             ist_faellig=status == KursStatus.FAELLIG,
             ist_aktiv=status == KursStatus.AKTIV,
             note=self.formatiere_note(kurs.note),
-            noten=[self.formatiere_note(note) for note in kurs.noten],
-            zeige_note2=len(kurs.noten) >= 1,
-            zeige_note3=len(kurs.noten) >= 2
+            noten=kurs.noten,
+            zeige_note2=self.zeige_note(2, kurs),
+            zeige_note3=self.zeige_note(3, kurs)
         )
+    
+    def zeige_note(self, x:int, kurs: Kurs) -> bool:
+        return (len(kurs.noten) == x-1 and kurs.kann_note_hinzufuegen()) or (len(kurs.noten) >= x)
