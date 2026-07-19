@@ -4,11 +4,23 @@ from src.entity.enums import KursStatus
 from src.view.models.kurs_view_model import KursViewModel
 from src.view.transformers.base_transformer import BaseTransformer
 
+
 class KursTransformer(BaseTransformer):
-    """Transformer for Kurs entities to KursViewModel"""
+    """
+    Transformer für die Konvertierung von Kurs-Entitäten in KursViewModel.
+    """
     
     def transform(self, kurs: Kurs, datum: date) -> KursViewModel:
-        """Transform a Kurs entity to KursViewModel"""
+        """
+        Konvertiert eine Kurs-Entität in ein KursViewModel.
+        
+        Args:
+            kurs (Kurs): Die zu konvertierende Kurs-Entität.
+            datum (date): Das aktuelle Datum.
+            
+        Returns:
+            KursViewModel: Das konvertierte KursViewModel.
+        """
         status = kurs.get_status(datum)
         
         return KursViewModel(
@@ -29,5 +41,16 @@ class KursTransformer(BaseTransformer):
             zeige_note3=self.zeige_note(3, kurs)
         )
     
+
     def zeige_note(self, x:int, kurs: Kurs) -> bool:
+        """
+        Prüft, ob eine bestimmte Note angezeigt werden soll.
+        
+        Args:
+            x (int): Die Nummer der Note (2 oder 3).
+            kurs (Kurs): Der Kurs, dessen Noten geprüft werden sollen.
+            
+        Returns:
+            bool: True, wenn die Note angezeigt werden soll, False sonst.
+        """
         return (len(kurs.noten) == x-1 and kurs.kann_note_hinzufuegen()) or (len(kurs.noten) >= x)

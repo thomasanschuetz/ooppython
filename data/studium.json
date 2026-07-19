@@ -1,20 +1,30 @@
 {
     "name": "Mein Studium",
-    "beginn": "2026-07-18",
+    "beginn": "2026-01-18",
     "ziel_note": 1.8,
-    "ziel_monate": 36,
+    "ziel_monate": 12,
     "kurse": [
+        {
+            "id": "a6eed099107e4b12a3e3abab23f7db0f",
+            "name": "baz",
+            "ects": 5,
+            "schwere": 1,
+            "noten": [],
+            "beginn": "2026-07-18",
+            "ende": "2026-08-27"
+        },
         {
             "id": "0644d48b81524f1b93dfb7289fdf0644",
             "name": "foo",
             "ects": 5,
-            "schwere": 3,
+            "schwere": 5,
             "noten": [
+                5.0,
                 5.0,
                 2.0
             ],
-            "beginn": "2026-07-18",
-            "ende": "2028-01-16"
+            "beginn": "2026-08-28",
+            "ende": "2027-03-18"
         },
         {
             "id": "3cfc7b88bfef40a18cbdd04444d372e0",
@@ -22,8 +32,8 @@
             "ects": 5,
             "schwere": 3,
             "noten": [],
-            "beginn": "2028-01-17",
-            "ende": "2029-07-17"
+            "beginn": "2027-03-19",
+            "ende": "2027-07-17"
         }
     ]
 }

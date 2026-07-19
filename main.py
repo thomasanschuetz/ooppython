@@ -1,12 +1,5 @@
-# weiter mit studium, kurs aktualisieren
-#  - generiertes in deutsch übersetzen
-#  - validierung in controller, main übergibt nur parameter
-#  - note eintragen mit eigenem icon
-#  - noten nur eintragen, wenn nicht schon bestanden
-# - buttons schick machen
-
-
-
+# Hauptdatei für die Flask-Anwendung zur Verwaltung eines Studiums.
+# Diese Datei enthält die Routen und die Hauptlogik der Webanwendung.
 from src.repo.studium_repository import StudiumRepository
 from src.service.studium_planung_service import StudiumPlanungService
 from src.controller.dashboard_controller import DashboardController
@@ -14,13 +7,15 @@ from src.validation.validator import Validator
 from src.entity.enums import KursSchwere
 
 from datetime import date
-from dateutil.relativedelta import relativedelta
 from flask import Flask, request, render_template, redirect, flash
+
+# Initialisierung der Flask-Anwendung
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
-today = date.today() + relativedelta(days=250)
+today = date.today()
 
+# Initialisierung der Services und Controller
 studium_planning_service = StudiumPlanungService()
 studium_repo = StudiumRepository('data/studium.json')
 dashboard_controller = DashboardController(studium_planning_service, studium_repo, today)
@@ -28,13 +23,24 @@ dashboard_controller = DashboardController(studium_planning_service, studium_rep
 
 @app.route("/")
 def dashboard() -> str:
+    """
+    Zeigt das Dashboard der Anwendung an.
+    
+    Returns:
+        str: Gerenderte HTML-Seite des Dashboards.
+    """
     studium_view = dashboard_controller.lade_studium_view()
     return render_template('dashboard.html', studium=studium_view)
 
+
 @app.route("/update_studium", methods=["GET"])
 def get_update_studium() -> str:
-
-    studium_view_model = dashboard_controller.lade_studium_view()
+    """
+    Zeigt das Formular zum Aktualisieren des Studiums an.
+    
+    Returns:
+        str: Gerenderte HTML-Seite des Aktualisierungsformulars.
+    """
     studium = dashboard_controller.lade_studium()
     
     return render_template('update_studium.html', 
@@ -43,8 +49,16 @@ def get_update_studium() -> str:
         ziel_note=studium.ziel_note,
         ziel_monate=studium.ziel_monate
     )
+
+
 @app.route("/update_studium", methods=["POST"])
 def post_update_studium() -> str:
+    """
+    Verarbeitet das Formular zum Aktualisieren des Studiums.
+    
+    Returns:
+        str: Weiterleitung zur Startseite nach erfolgreicher Aktualisierung.
+    """
     p = request.form
     name = p.get('name')
     beginn = p.get('beginn')
@@ -71,8 +85,15 @@ def post_update_studium() -> str:
 
     return redirect('/')
 
+
 @app.route("/bewege_kurs", methods=["POST"])
 def bewege_kurs() -> str:
+    """
+    Verschiebt einen Kurs in eine andere Richtung (hoch oder runter).
+    
+    Returns:
+        str: Weiterleitung zur Startseite nach erfolgreicher Verschiebung.
+    """
     p = request.form
     
     kurs_id = p.get('kurs_id')
@@ -81,18 +102,30 @@ def bewege_kurs() -> str:
     dashboard_controller.verschiebe_kurs(kurs_id, hoch)
     return redirect('/')
 
+
 @app.route("/bearbeite_kurs", methods=["GET"])
 def get_bearbeite_kurs() -> str:
-
+    """
+    Zeigt das Formular zum Bearbeiten eines Kurses an.
+    
+    Returns:
+        str: Gerenderte HTML-Seite des Bearbeitungsformulars.
+    """
     g = request.args
     kurs_id = g.get('id')
     kurs_view = dashboard_controller.lade_kurs_view(kurs_id)
     
     return render_template("bearbeite_kurs.html", kurs=kurs_view, KursSchwere=KursSchwere)
 
+
 @app.route("/bearbeite_kurs", methods=["POST"])
 def post_bearbeite_kurs() -> str:
+    """
+    Verarbeitet das Formular zum Bearbeiten eines Kurses.
     
+    Returns:
+        str: Weiterleitung zur Startseite nach erfolgreicher Aktualisierung.
+    """
     p = request.form
     kurs_id = p.get('id')
     name = p.get('name')
@@ -125,10 +158,23 @@ def post_bearbeite_kurs() -> str:
 
 @app.route("/erstelle_kurs", methods=["GET"])
 def get_erstelle_kurs() -> str:
+    """
+    Zeigt das Formular zum Erstellen eines neuen Kurses an.
+    
+    Returns:
+        str: Gerenderte HTML-Seite des Erstellungsformulars.
+    """
     return render_template("erstelle_kurs.html", kurs={'name': '', 'ects': 5, 'schwere': 3}, KursSchwere=KursSchwere)
+
 
 @app.route("/erstelle_kurs", methods=["POST"])
 def post_erstelle_kurs() -> str:
+    """
+    Verarbeitet das Formular zum Erstellen eines neuen Kurses.
+    
+    Returns:
+        str: Weiterleitung zur Startseite nach erfolgreicher Erstellung.
+    """
     p = request.form
     name = p.get('name')
     ects = p.get('ects')
@@ -145,6 +191,8 @@ def post_erstelle_kurs() -> str:
     return redirect('/')
 
 
-
 if __name__ == "__main__":
+    """
+    Startet die Flask-Anwendung im Debug-Modus.
+    """
     app.run(debug=True)

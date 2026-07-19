@@ -1,3 +1,4 @@
+# Import der benötigten Module und Klassen
 from datetime import date
 from typing import List
 from src.entity.studium import Studium
@@ -11,7 +12,13 @@ from src.view.transformers.noten_transformer import NotenTransformer
 from src.view.transformers.pruefung_transformer import PruefungTransformer
 
 class StudiumTransformer:
+    """
+    Transformer für die Konvertierung von Studiumsdaten in StudiumViewModel.
+    """
     def __init__(self):
+        """
+        Initialisiert den StudiumTransformer.
+        """
         self.kurs_transformer = KursTransformer()
         self.stats_transformer = StatsTransformer()
         self.grade_transformer = NotenTransformer()
@@ -19,6 +26,19 @@ class StudiumTransformer:
     
     def transformiere(self, studium: Studium, statistik: StudiumStatistik,
                  semester_list: List[Semester], datum: date) -> StudiumViewModel:
+        """
+        Konvertiert Studiumsdaten in ein StudiumViewModel.
+        
+        Args:
+            studium (Studium): Das zu konvertierende Studium.
+            statistik (StudiumStatistik): Die Statistikdaten des Studiums.
+            semester_list (List[Semester]): Die Liste der Semester.
+            datum (date): Das aktuelle Datum.
+            
+        Returns:
+            StudiumViewModel: Das konvertierte StudiumViewModel.
+        """
+        """Transform a Kurs entity to KursViewModel"""
         semester_view_models = [
             SemesterViewModel(
                 name=str(s.no),

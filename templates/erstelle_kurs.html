@@ -24,7 +24,7 @@
         <input type="number" name="ects" min="1" max="20" required value="{{ kurs.ects }}"/>
         
         <label for="schwere">Schwere</label>
-        <input type="number" name="schwere" min="{{ KursSchwere.EINS.value }}" max="{{ KursSchwere.FUENF.value }}" required value="{{ kurs.schwere }}"/>
+        <input type="number" name="schwere" min="{{ KursSchwere.SEHR_LEICHT.value }}" max="{{ KursSchwere.SEHR_SCHWER.value }}" required value="{{ kurs.schwere }}"/>
         
         <input type="submit" value="Speichern"/>
         

@@ -2,8 +2,22 @@ from src.view.models.noten_view_model import NotenViewModel
 from src.view.transformers.base_transformer import BaseTransformer
 
 class NotenTransformer(BaseTransformer):
+    """
+    Transformer für die Konvertierung von Notendaten in NotenViewModel.
+    """
     def transform(self, ziel_note: float, durchnitt_note: float | None, 
                  benoetigt_note: float | None) -> NotenViewModel:
+        """
+        Konvertiert Notendaten in ein NotenViewModel.
+        
+        Args:
+            ziel_note (float): Die angestrebte Durchschnittsnote.
+            durchnitt_note (float | None): Die aktuelle Durchschnittsnote.
+            benoetigt_note (float | None): Die benötigte Durchschnittsnote.
+            
+        Returns:
+            NotenViewModel: Das konvertierte NotenViewModel.
+        """
         if durchnitt_note is None:
             return NotenViewModel(
                 ziel=self.formatiere_note(ziel_note),

@@ -8,7 +8,22 @@ from src.view.models.stats_view_model import StatsViewModel
 
 @dataclass
 class StudiumViewModel:
-    """View model for study program information"""
+    """
+    ViewModel für die Darstellung von Studiumsinformationen.
+    
+    Attribute:
+        name (str): Der Name des Studiums.
+        datum (str): Das aktuelle Datum.
+        anzahl_tage_gesamt (int): Die Gesamtanzahl der Tage des Studiums.
+        vergangene_tage (int): Die Anzahl der vergangenen Tage.
+        verbleibende_tage (int): Die Anzahl der verbleibenden Tage.
+        kurse (List[KursViewModel]): Die Liste der Kurse.
+        semester (List[SemesterViewModel]): Die Liste der Semester.
+        faellige_pruefungen (List[PruefungViewModel]): Die Liste der fälligen Prüfungen.
+        naechste_pruefungen (List[PruefungViewModel]): Die Liste der nächsten Prüfungen.
+        noten (NotenViewModel): Die Noteninformationen.
+        stats (StatsViewModel): Die Statistikinformationen.
+    """
     name: str
     datum: str
     anzahl_tage_gesamt: int
