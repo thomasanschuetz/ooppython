@@ -31,15 +31,15 @@
 
                     <div class="buttons">
                         
-                        <form action="/bewege_kurs" method="POST">
+                        <form action="/bewege_kurs" method="POST" class="button">
                             <input type="hidden" name="kurs_id" value="{{kurs.id}}">
                             <input type="hidden" name="richtung" value="hoch">
-                            <input type="submit" class="button" name="bewege_kurs" class="hoch" value="&#9650;"/>
+                            <input type="submit" name="bewege_kurs" class="hoch" value="&#9650;"/>
                         </form>
-                        <form action="/bewege_kurs" method="POST">
+                        <form action="/bewege_kurs" method="POST" class="button">
                             <input type="hidden" name="kurs_id" value="{{kurs.id}}">
                             <input type="hidden" name="richtung" value="runter">
-                            <input type="submit" class="button" name="bewege_kurs" class="runter" value="&#9660;"/>
+                            <input type="submit" name="bewege_kurs" class="runter" value="&#9660;"/>
                         </form>
                         <a class="button" href="/bearbeite_kurs?id={{ kurs.id }}">&#9998;</a>
                         

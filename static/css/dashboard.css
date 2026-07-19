@@ -40,6 +40,7 @@
     --form-input-bg: #0F172A;
     --form-input-border: #334155;
     --form-button-bg: #3B82F6;
+    --form-button-hover-bg: #2563EB;
     --form-button-text: #FFFFFF;
 }
 html {
@@ -79,10 +80,9 @@ button, a.button, input[type=submit].button {
 a.button {
     display: inline-block;
     padding: 0.5rem 1rem;
-    background-color: var(--form-bg);
+    background: none;
     color: var(--text-main);
-    border: 1px solid var(--form-border);
-    border-radius: 0.25rem;
+    border: none;
     text-decoration: none;
     margin-bottom: 1rem;
 }
@@ -91,14 +91,30 @@ a.button:hover {
     background-color: var(--form-input-bg);
 }
 
-/* Form Styles */
-form {
+form:not(.button) {
     background-color: var(--form-bg);
     padding: 1rem;
     border-radius: 0.5rem;
     border: 1px solid var(--form-border);
     max-width: 500px;
     margin-top: 1rem;
+
+    input[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        margin-top: 1.5rem;
+        background-color: var(--form-button-bg);
+        color: var(--form-button-text);
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    input[type="submit"]:hover {
+        background-color: var(--form-button-hover-bg);
+    }
 }
 
 .errors {
@@ -133,22 +149,7 @@ input[type="date"] {
     border-radius: 0.25rem;
 }
 
-input[type="submit"] {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    margin-top: 1.5rem;
-    background-color: var(--form-button-bg);
-    color: var(--form-button-text);
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    font-weight: bold;
-}
 
-input[type="submit"]:hover {
-    background-color: #2563EB;
-}
 
 #dashboard {
     display:flex;    
@@ -240,6 +241,22 @@ input[type="submit"]:hover {
 
                     form, a {
                         display:inline;
+                    }
+
+                    input[type="submit"], a.button {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        padding: 0;
+                        margin: 0;
+                        background: none;
+                        color: var(--text-main);
+                        border: none;
+                        cursor: pointer;
+                        font-weight: normal;
+                    }
+
+                    input[type="submit"]:hover {
+                        background-color: var(--form-input-bg);
                     }
                 }
 
