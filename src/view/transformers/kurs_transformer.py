@@ -10,7 +10,7 @@ class KursTransformer(BaseTransformer):
     Transformer für die Konvertierung von Kurs-Entitäten in KursViewModel.
     """
     
-    def transform(self, kurs: Kurs, datum: date) -> KursViewModel:
+    def transformiere(self, kurs: Kurs, datum: date) -> KursViewModel:
         """
         Konvertiert eine Kurs-Entität in ein KursViewModel.
         
@@ -37,12 +37,12 @@ class KursTransformer(BaseTransformer):
             ist_aktiv=status == KursStatus.AKTIV,
             note=self.formatiere_note(kurs.note),
             noten=kurs.noten,
-            zeige_note2=self.zeige_note(2, kurs),
-            zeige_note3=self.zeige_note(3, kurs)
+            zeige_note2=self._zeige_note(2, kurs),
+            zeige_note3=self._zeige_note(3, kurs)
         )
     
 
-    def zeige_note(self, x:int, kurs: Kurs) -> bool:
+    def _zeige_note(self, x:int, kurs: Kurs) -> bool:
         """
         Prüft, ob eine bestimmte Note angezeigt werden soll.
         

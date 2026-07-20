@@ -19,10 +19,10 @@ class StudiumTransformer:
         """
         Initialisiert den StudiumTransformer.
         """
-        self.kurs_transformer = KursTransformer()
-        self.stats_transformer = StatsTransformer()
-        self.grade_transformer = NotenTransformer()
-        self.exam_transformer = PruefungTransformer()
+        self.kurs_transformer: KursTransformer = KursTransformer()
+        self.stats_transformer: StatsTransformer = StatsTransformer()
+        self.grade_transformer:NotenTransformer = NotenTransformer()
+        self.exam_transformer:PruefungTransformer = PruefungTransformer()
     
     def transformiere(self, studium: Studium, statistik: StudiumStatistik,
                  semester_list: List[Semester], datum: date) -> StudiumViewModel:
@@ -48,7 +48,7 @@ class StudiumTransformer:
         ]
         
         kurs_view_models = [
-            self.kurs_transformer.transform(k, datum)
+            self.kurs_transformer.transformiere(k, datum)
             for k in studium.kurse
         ]
         
@@ -60,7 +60,7 @@ class StudiumTransformer:
         )
         
         # Transform grades
-        noten_view_model = self.grade_transformer.transform(
+        noten_view_model = self.grade_transformer.transformiere(
             ziel_note=studium.ziel_note,
             durchnitt_note=statistik.durchnitt_note,
             benoetigt_note=statistik.benoetigt_note

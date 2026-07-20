@@ -5,7 +5,7 @@ class NotenTransformer(BaseTransformer):
     """
     Transformer für die Konvertierung von Notendaten in NotenViewModel.
     """
-    def transform(self, ziel_note: float, durchnitt_note: float | None, 
+    def transformiere(self, ziel_note: float, durchnitt_note: float | None, 
                  benoetigt_note: float | None) -> NotenViewModel:
         """
         Konvertiert Notendaten in ein NotenViewModel.
