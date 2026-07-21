@@ -1,10 +1,8 @@
 from datetime import date
 
-class BaseTransformer:
+class Formatierer:
     """
-    Basisklasse für Transformer.
-    
-    Diese Klasse bietet grundlegende Methoden zur Formatierung von Daten.
+    Grundlegende Methoden zur Formatierung von Daten.
     """
     def formatiere_note(self, note: float | None) -> str:
         """

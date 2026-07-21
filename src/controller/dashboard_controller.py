@@ -7,6 +7,7 @@ from src.service.studium_planung_service import StudiumPlanungService
 from src.entity.studium import Studium
 from src.entity.kurs import Kurs
 from src.view.transformers.studium_transformer import StudiumTransformer
+from src.view.transformers.formatierer import Formatierer
 from src.view.models.studium_view_model import StudiumViewModel
 from src.view.models.kurs_view_model import KursViewModel
 
@@ -30,7 +31,7 @@ class DashboardController:
         self.planung_service = planung_service
         self.repository = repository
         self.datum = datum
-        self.studium_transformer = StudiumTransformer()
+        self.studium_transformer = StudiumTransformer(Formatierer())
 
     def lade_studium(self) -> Studium:
         """

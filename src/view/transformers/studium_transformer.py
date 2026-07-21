@@ -10,19 +10,20 @@ from src.view.transformers.kurs_transformer import KursTransformer
 from src.view.transformers.stats_transformer import StatsTransformer
 from src.view.transformers.noten_transformer import NotenTransformer
 from src.view.transformers.pruefung_transformer import PruefungTransformer
+from src.view.transformers.formatierer import Formatierer
 
 class StudiumTransformer:
     """
     Transformer für die Konvertierung von Studiumsdaten in StudiumViewModel.
     """
-    def __init__(self):
+    def __init__(self, formatierer: Formatierer):
         """
         Initialisiert den StudiumTransformer.
         """
-        self.kurs_transformer: KursTransformer = KursTransformer()
+        self.kurs_transformer: KursTransformer = KursTransformer(formatierer)
         self.stats_transformer: StatsTransformer = StatsTransformer()
-        self.grade_transformer:NotenTransformer = NotenTransformer()
-        self.exam_transformer:PruefungTransformer = PruefungTransformer()
+        self.noten_transformer:NotenTransformer = NotenTransformer(formatierer)
+        self.pruefung_transformer:PruefungTransformer = PruefungTransformer()
     
     def transformiere(self, studium: Studium, statistik: StudiumStatistik,
                  semester_list: List[Semester], datum: date) -> StudiumViewModel:
@@ -52,15 +53,15 @@ class StudiumTransformer:
             for k in studium.kurse
         ]
         
-        faellige_pruefungen = self.exam_transformer.transformiere_faellige_pruefungen(
+        faellige_pruefungen = self.pruefung_transformer.transformiere_faellige_pruefungen(
             list(studium.kurse), datum
         )
-        naechste_pruefungen = self.exam_transformer.transformiere_naechste_pruefungen(
+        naechste_pruefungen = self.pruefung_transformer.transformiere_naechste_pruefungen(
             list(studium.kurse), datum
         )
         
         # Transform grades
-        noten_view_model = self.grade_transformer.transformiere(
+        noten_view_model = self.noten_transformer.transformiere(
             ziel_note=studium.ziel_note,
             durchnitt_note=statistik.durchnitt_note,
             benoetigt_note=statistik.benoetigt_note

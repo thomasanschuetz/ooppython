@@ -1,10 +1,15 @@
 from src.view.models.noten_view_model import NotenViewModel
-from src.view.transformers.base_transformer import BaseTransformer
+from src.view.transformers.formatierer import Formatierer
 
-class NotenTransformer(BaseTransformer):
+class NotenTransformer():
     """
     Transformer für die Konvertierung von Notendaten in NotenViewModel.
     """
+
+    def __init__(self, formatierer: Formatierer):
+        self.formatierer = formatierer
+
+
     def transformiere(self, ziel_note: float, durchnitt_note: float | None, 
                  benoetigt_note: float | None) -> NotenViewModel:
         """
@@ -20,7 +25,7 @@ class NotenTransformer(BaseTransformer):
         """
         if durchnitt_note is None:
             return NotenViewModel(
-                ziel=self.formatiere_note(ziel_note),
+                ziel=self.formatierer.formatiere_note(ziel_note),
                 aktuell={
                     'note': 'n.a.',
                     'ok': True
@@ -32,13 +37,13 @@ class NotenTransformer(BaseTransformer):
             )
         
         return NotenViewModel(
-            ziel=self.formatiere_note(ziel_note),
+            ziel=self.formatierer.formatiere_note(ziel_note),
             aktuell={
-                'note': self.formatiere_note(durchnitt_note),
+                'note': self.formatierer.formatiere_note(durchnitt_note),
                 'ok': durchnitt_note <= ziel_note
             },
             benoetigt={
-                'note': self.formatiere_note(benoetigt_note) if benoetigt_note else 'n.a.',
+                'note': self.formatierer.formatiere_note(benoetigt_note) if benoetigt_note else 'n.a.',
                 'ok': benoetigt_note >= ziel_note if benoetigt_note else True
             }
         )
