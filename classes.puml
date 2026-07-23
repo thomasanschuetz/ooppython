@@ -1,0 +1,240 @@
+@startuml src
+top to bottom direction
+
+package entity {
+  class Studium {
+    +name: str
+    +beginn: datetime.date
+    +ziel_note: float
+    +ziel_monate: int
+    +ende(): date
+    +anzahl_tage(): int
+    +kurse(): Iterator[Kurs]
+    +anzahl_kurse(): int
+    +vergangene_tage(datum: date): int
+    +verbleibende_tage(datum: date): int
+    +fuege_kurs_hinzu(kurs: Kurs): None
+    +aktualisiere_kurs(kurs: Kurs): None
+    +verschiebe_kurs(kurs_id: int, hoch: bool): None
+  }
+  class Kurs {
+    +id: str
+    +name: str
+    +ects: int
+    +schwere: KursSchwere
+    +noten: float[]
+    +beginn: date | None
+    +ende: date | None
+    +get_status(datum: date): KursStatus
+    +anzahl_tage(): int | None
+    +faellig_in_tagen(datum: date): int
+    +kann_note_hinzufuegen(): bool
+    +ist_fertig(): bool
+    +note(): None | float
+    +ist_aktiv(datum: date): bool
+    +ist_faellig(datum: date): bool
+  }
+
+  class entity.semester.Semester {
+    +no: int
+    +beginn: date
+    +ende: date
+    +anzahl_tage(): int
+  }
+
+  class StudiumStatistik {
+    +anzahl_kurse: int
+    +anzahl_kurse_soll: int
+    +anzahl_kurse_ist: int
+    +anzahl_ects: float
+    +anzahl_ects_soll: float
+    +anzahl_ects_ist: float
+    +durchnitt_note: float
+    +benoetigt_note: float
+  }
+
+  enum KursSchwere {
+    SEHR_LEICHT
+    LEICHT
+    MITTEL
+    SCHWER
+    SEHR_SCHWER
+  }
+
+  enum KursStatus {
+    UNGEPLANT
+    OFFEN
+    AKTIV
+    FAELLIG
+    FERTIG
+  }
+}
+
+package repo {
+  class StudiumRepository {
+    +path: Path
+    +speichere_studium(studium: Studium): None
+    +lade_studium(): Studium | None
+  }
+}
+
+package validation {
+  class Validator {
+    +validiere_studium(name: str, beginn: str, ziel_note: float, ziel_monate: int): str[]
+    +validiere_kurs(name: str, ects: int, schwere: int): str[]
+    +validiere_noten(noten: str[]): str[]
+
+  }
+}
+
+package view {
+  package models {
+    class KursViewModel {
+      +id: str
+      +name: str
+      +schwere: str
+      +ects: str
+      +anzahl_tage: str
+      +hoehe_rel: str
+      +beginn: str
+      +ende: str
+      +ist_fertig: bool
+      +ist_faellig: bool
+      +ist_aktiv: bool
+      +note: str
+      +noten: float[]
+      +zeige_note2: bool
+      +zeige_note3: bool
+    }
+    class NotenViewModel {
+      +ziel: str
+      +aktuell: dict[str, str | bool]
+      +benoetigt: dict[str, str | bool]
+    }
+    class PruefungViewModel {
+      +name: str
+      +faellig_seit_tage: int | None
+      +faellig_in_tage: int | None
+    }
+    class SemesterViewModel {
+      +name: str
+      +hoehe_rel: int
+    }
+    class StatsViewModel {
+      +anzahl_kurse: int
+      +anzahl_ects: float
+      +anzahl_kurse_soll: int
+      +anzahl_ects_soll: float
+      +kurse_ist: dict[str, int | bool]
+      +ects_ist: dict[str, float | bool]
+    }
+    class StudiumViewModel {
+      +name: str
+      +datum: str
+      +anzahl_tage_gesamt: int
+      +vergangene_tage: int
+      +verbleibende_tage: int
+      +kurse: KursViewModel[]
+      +semester: SemesterViewModel[]
+      +faellige_pruefungen: PruefungViewModel[]
+      +naechste_pruefungen: PruefungViewModel[]
+      +noten: NotenViewModel
+      +stats: StatsViewModel
+    }
+  }
+
+  package transformers {
+    class Formatierer {
+      +formatiere_note(note: float): str
+      +formatiere_datum(datum: date): str
+    }
+
+    class StudiumTransformer {
+      +kurs_transformer: KursTransformer
+      +stats_transformer: StatsTransformer
+      +grade_transformer: NotenTransformer
+      +exam_transformer: PruefungTransformer
+      +transformiere(studium: Studium, statistik: StudiumStatistik, semester_list: Semester[], datum: date): StudiumViewModel
+    }
+
+    class KursTransformer {
+      +transformiere(kurs: Kurs, datum: date): KursViewModel
+    }
+    class NotenTransformer {
+      +transformiere(ziel_note: float, durchnitt_note: float, benoetigt_note: float): NotenViewModel
+    }
+    class PruefungTransformer {
+      +transformiere_faellige_pruefungen(kurse: Kurs[], datum: date): PruefungViewModel[]
+      +transformiere_naechste_pruefungen(kurse: Kurs[], datum: date, max_kurse: int): PruefungViewModel[]
+    }
+    class StatsTransformer {
+      +transformiere(statistik: StudiumStatistik): StatsViewModel
+    }
+  }
+}
+
+package service {
+  class StudiumPlanungService {
+    +setze_kurs_zeitraeume(studium: Studium): None
+    +get_semester(studium: Studium): Semester[]
+    +get_studium_statistik(studium: Studium, datum: date): StudiumStatistik
+    +kurse_fertig(studium: Studium): Kurs[]
+    +kurse_offen(studium: Studium, datum: date): Kurs[]
+    +kurse_soll(studium: Studium, datum: date): Kurs[]
+    +naechste_pruefungen(studium: Studium, datum: date, max_kurse: int): Kurs[]
+    +anzahl_ects(studium: Studium): int
+    +anzahl_ects_soll(studium: Studium, datum: date): int
+    +anzahl_ects_fertig(studium: Studium): int
+    +durchschnittsnote(studium: Studium): float | None
+    +benoetigte_durchschnittsnote(studium: Studium): float | None
+  }
+}
+
+package controller {
+  class DashboardController {
+    +planung_service: StudiumPlanungService
+    +repository: StudiumRepository
+    +datum: date
+    +studium_transformer: StudiumTransformer
+    +lade_studium(): Studium
+    +lade_kurs_view(kurs_id: string): KursViewModel | None
+    +lade_studium_view(): StudiumViewModel
+    +erstelle_kurs(name: string, ects: int, schwere: KursSchwere): None
+    +aktualisiere_kurs(kurs_id: string, name: string, ects: int, schwere: KursSchwere, noten: float[]): None
+    +verschiebe_kurs(kurs_id: string, hoch: bool): None
+  }
+}
+
+
+Studium "1 " *-- "* " Kurs
+Kurs "1 " *-- "1 " KursSchwere
+
+StudiumViewModel "1 " *-- "* " KursViewModel
+StudiumViewModel "1 " *-- "* " SemesterViewModel
+StudiumViewModel "1 " *-- "* " PruefungViewModel
+StudiumViewModel "1 " *-- "1 " NotenViewModel
+StudiumViewModel "1 " *-- "1 " StatsViewModel
+
+StudiumTransformer *-- KursTransformer
+StudiumTransformer *-- StatsTransformer
+StudiumTransformer *-- NotenTransformer
+StudiumTransformer *-- PruefungTransformer
+
+
+StudiumPlanungService --> Studium
+StudiumPlanungService --> Semester
+StudiumPlanungService --> StudiumStatistik
+StudiumPlanungService --> Kurs
+StudiumRepository --> Studium
+StudiumRepository --> Kurs
+DashboardController --> StudiumRepository
+DashboardController --> StudiumPlanungService
+DashboardController --> Studium
+DashboardController --> Kurs
+KursTransformer --> Kurs
+StudiumTransformer --> Studium
+StudiumTransformer --> StudiumStatistik
+StudiumTransformer --> Semester
+StudiumViewModel *-- "*" KursViewModel
+
+@enduml
