@@ -9,7 +9,6 @@ package entity {
     +ziel_monate: int
     +ende(): date
     +anzahl_tage(): int
-    +kurse(): Iterator[Kurs]
     +anzahl_kurse(): int
     +vergangene_tage(datum: date): int
     +verbleibende_tage(datum: date): int
@@ -21,11 +20,9 @@ package entity {
     +id: str
     +name: str
     +ects: int
-    +schwere: KursSchwere
     +noten: float[]
     +beginn: date | None
     +ende: date | None
-    +get_status(datum: date): KursStatus
     +anzahl_tage(): int | None
     +faellig_in_tagen(datum: date): int
     +kann_note_hinzufuegen(): bool
@@ -78,14 +75,6 @@ package repo {
   }
 }
 
-package validation {
-  class Validator {
-    +validiere_studium(name: str, beginn: str, ziel_note: float, ziel_monate: int): str[]
-    +validiere_kurs(name: str, ects: int, schwere: int): str[]
-    +validiere_noten(noten: str[]): str[]
-
-  }
-}
 
 package view {
   package models {
@@ -205,11 +194,20 @@ DashboardController "1 " --> "1 " KursViewModel : erstellt
 DashboardController "1 " --> "1 " Studium
 DashboardController "1 " --> "0..* " Kurs
 
+'Service
+StudiumPlanungService "1 " --> "1 " Studium
+StudiumPlanungService "1 " --> "0..* " Kurs
+StudiumPlanungService "1 " --> "1..* " Semester
+StudiumPlanungService "1 " --> "1 * " StudiumStatistik
 
 'Repo
 StudiumRepository "1 " --> "1 " Studium
 StudiumRepository "1 " --> "0..* " Kurs
 
+'Entity
+Studium "1 " *-- "0..* " Kurs
+Kurs "1 " o-- "1 " KursSchwere
+Kurs "1 " o-- "1 " KursStatus
 
 'View
 StudiumTransformer "1 " o-- "1 " KursTransformer
