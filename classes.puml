@@ -206,35 +206,57 @@ package controller {
 }
 
 
-Studium "1 " *-- "* " Kurs
-Kurs "1 " *-- "1 " KursSchwere
+'Controller
+DashboardController "1 " o-- "1 " StudiumRepository
+DashboardController "1 " o-- "1 " StudiumPlanungService
+DashboardController "1 " o-- "1 " StudiumTransformer
+DashboardController "1 " o-- "1 " StudiumRepository
+DashboardController "1 " --> "1 " Formatierer : erstellt
+DashboardController "1 " --> "1 " StudiumViewModel : erstellt
+DashboardController "1 " --> "1 " KursViewModel : erstellt
+DashboardController "1 " --> "1 " Studium
+DashboardController "1 " --> "0..* " Kurs
 
-StudiumViewModel "1 " *-- "* " KursViewModel
-StudiumViewModel "1 " *-- "* " SemesterViewModel
-StudiumViewModel "1 " *-- "* " PruefungViewModel
+
+'Repo
+StudiumRepository "1 " --> "1 " Studium
+StudiumRepository "1 " --> "0..* " Kurs
+
+
+'View
+StudiumTransformer "1 " o-- "1 " KursTransformer
+StudiumTransformer "1 " o-- "1 " StatsTransformer
+StudiumTransformer "1 " o-- "1 " NotenTransformer
+StudiumTransformer "1 " o-- "1 " PruefungTransformer
+StudiumTransformer "1 " --> "1 " Studium : transformiert
+StudiumTransformer "1 " --> "1 " Semester : transformiert
+StudiumTransformer "1 " --> "1 " StudiumStatistik : transformiert
+StudiumTransformer "1 " --> "1 " Formatierer
+
+StudiumTransformer "1 " --> "1 " StudiumViewModel : erstellt
+StudiumTransformer "1 " --> "1 " SemesterViewModel : erstellt
+
+KursTransformer "1 " o-- "1 " Formatierer
+KursTransformer "1 " --> "1 " Kurs : transformiert
+KursTransformer "1 " --> "1 " KursViewModel : erstellt
+
+NotenTransformer "1 " o-- "1 " Formatierer
+
+PruefungTransformer "1 " --> "0..* " Kurs : transformiert
+PruefungTransformer "1 " --> "0..* " PruefungViewModel : erstellt
+
+StatsTransformer "1 " --> "1 " StudiumStatistik : transformiert
+StatsTransformer "1 " --> "1 " StatsViewModel : erstellt
+
+StudiumViewModel "1 " *-- "0..* " KursViewModel
+StudiumViewModel "1 " *-- "1..* " SemesterViewModel
+StudiumViewModel "1 " *-- "0..* " PruefungViewModel
 StudiumViewModel "1 " *-- "1 " NotenViewModel
 StudiumViewModel "1 " *-- "1 " StatsViewModel
 
-StudiumTransformer *-- KursTransformer
-StudiumTransformer *-- StatsTransformer
-StudiumTransformer *-- NotenTransformer
-StudiumTransformer *-- PruefungTransformer
 
 
-StudiumPlanungService --> Studium
-StudiumPlanungService --> Semester
-StudiumPlanungService --> StudiumStatistik
-StudiumPlanungService --> Kurs
-StudiumRepository --> Studium
-StudiumRepository --> Kurs
-DashboardController --> StudiumRepository
-DashboardController --> StudiumPlanungService
-DashboardController --> Studium
-DashboardController --> Kurs
-KursTransformer --> Kurs
-StudiumTransformer --> Studium
-StudiumTransformer --> StudiumStatistik
-StudiumTransformer --> Semester
-StudiumViewModel *-- "*" KursViewModel
+
+
 
 @enduml
