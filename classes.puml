@@ -134,12 +134,8 @@ package view {
       +anzahl_tage_gesamt: int
       +vergangene_tage: int
       +verbleibende_tage: int
-      +kurse: KursViewModel[]
-      +semester: SemesterViewModel[]
       +faellige_pruefungen: PruefungViewModel[]
       +naechste_pruefungen: PruefungViewModel[]
-      +noten: NotenViewModel
-      +stats: StatsViewModel
     }
   }
 
@@ -150,10 +146,6 @@ package view {
     }
 
     class StudiumTransformer {
-      +kurs_transformer: KursTransformer
-      +stats_transformer: StatsTransformer
-      +grade_transformer: NotenTransformer
-      +exam_transformer: PruefungTransformer
       +transformiere(studium: Studium, statistik: StudiumStatistik, semester_list: Semester[], datum: date): StudiumViewModel
     }
 
@@ -192,10 +184,7 @@ package service {
 
 package controller {
   class DashboardController {
-    +planung_service: StudiumPlanungService
-    +repository: StudiumRepository
     +datum: date
-    +studium_transformer: StudiumTransformer
     +lade_studium(): Studium
     +lade_kurs_view(kurs_id: string): KursViewModel | None
     +lade_studium_view(): StudiumViewModel
@@ -210,7 +199,6 @@ package controller {
 DashboardController "1 " o-- "1 " StudiumRepository
 DashboardController "1 " o-- "1 " StudiumPlanungService
 DashboardController "1 " o-- "1 " StudiumTransformer
-DashboardController "1 " o-- "1 " StudiumRepository
 DashboardController "1 " --> "1 " Formatierer : erstellt
 DashboardController "1 " --> "1 " StudiumViewModel : erstellt
 DashboardController "1 " --> "1 " KursViewModel : erstellt
@@ -232,7 +220,6 @@ StudiumTransformer "1 " --> "1 " Studium : transformiert
 StudiumTransformer "1 " --> "1 " Semester : transformiert
 StudiumTransformer "1 " --> "1 " StudiumStatistik : transformiert
 StudiumTransformer "1 " --> "1 " Formatierer
-
 StudiumTransformer "1 " --> "1 " StudiumViewModel : erstellt
 StudiumTransformer "1 " --> "1 " SemesterViewModel : erstellt
 
@@ -248,15 +235,10 @@ PruefungTransformer "1 " --> "0..* " PruefungViewModel : erstellt
 StatsTransformer "1 " --> "1 " StudiumStatistik : transformiert
 StatsTransformer "1 " --> "1 " StatsViewModel : erstellt
 
-StudiumViewModel "1 " *-- "0..* " KursViewModel
-StudiumViewModel "1 " *-- "1..* " SemesterViewModel
-StudiumViewModel "1 " *-- "0..* " PruefungViewModel
-StudiumViewModel "1 " *-- "1 " NotenViewModel
-StudiumViewModel "1 " *-- "1 " StatsViewModel
-
-
-
-
-
+StudiumViewModel "1 " o-- "0..* " KursViewModel
+StudiumViewModel "1 " o-- "1..* " SemesterViewModel
+StudiumViewModel "1 " o-- "0..* " PruefungViewModel
+StudiumViewModel "1 " o-- "1 " NotenViewModel
+StudiumViewModel "1 " o-- "1 " StatsViewModel
 
 @enduml
