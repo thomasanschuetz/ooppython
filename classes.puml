@@ -3,7 +3,23 @@ top to bottom direction
 hide circle
 skinparam classAttributeIconSize 0
 
-package controller {
+package application {
+  class DashboardApplication {
+    - app: Flask
+    - today: date
+    - studium_repo: StudiumRepository
+    - studium_planning_service: StudiumPlanungService
+    - dashboard_controller: DashboardController
+    + dashboard(): str
+    + get_update_studium(): str
+    + post_update_studium(): str
+    + bewege_kurs(): str
+    + get_bearbeite_kurs(): str
+    + post_bearbeite_kurs(): str
+    + get_erstelle_kurs(): str
+    + post_erstelle_kurs(): str
+    + run(debug: bool): None
+  }
   class DashboardController {
     +datum: date
     +lade_studium(): Studium
@@ -191,6 +207,13 @@ package view {
     }
   }
 }
+
+'Application
+DashboardApplication "1 "--> "1 " DashboardController
+DashboardApplication "1 "--> "1 " StudiumPlanungService
+DashboardApplication "1 "--> "1 " StudiumRepository
+DashboardApplication -- Validator
+DashboardApplication "1 "--  "0..* " KursSchwere
 
 'Controller
 DashboardController "1 " o-- "1 " StudiumRepository
