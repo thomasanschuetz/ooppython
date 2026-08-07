@@ -5,7 +5,7 @@ from typing import List
 from src.repo.studium_repository import StudiumRepository
 from src.service.studium_planung_service import StudiumPlanungService
 from src.entity.studium import Studium
-from src.entity.kurs import Kurs
+from src.entity.enums import KursSchwere
 from src.view.transformers.studium_transformer import StudiumTransformer
 from src.view.transformers.formatierer import Formatierer
 from src.view.models.studium_view_model import StudiumViewModel
@@ -93,8 +93,7 @@ class DashboardController:
             schwere (int): Die Schwierigkeit des Kurses.
         """
         studium = self.lade_studium()
-        neuer_kurs = Kurs(id=uuid.uuid4().hex, name=name, ects=ects, schwere=schwere)
-        studium.fuege_kurs_hinzu(neuer_kurs)
+        studium.fuege_kurs_hinzu(kurs_id=uuid.uuid4().hex, name=name, ects=ects, schwere=KursSchwere(schwere))
         self.planung_service.setze_kurs_zeitraeume(studium)
         self.repository.speichere_studium(studium)
 
@@ -110,8 +109,7 @@ class DashboardController:
             noten (List[float]): Die neuen Noten des Kurses.
         """
         studium = self.lade_studium()
-        neuer_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere, noten=noten)
-        studium.aktualisiere_kurs(neuer_kurs)
+        studium.aktualisiere_kurs(kurs_id=kurs_id, name=name, ects=ects, schwere=KursSchwere(schwere), noten=noten)
         self.planung_service.setze_kurs_zeitraeume(studium)
         self.repository.speichere_studium(studium)
 

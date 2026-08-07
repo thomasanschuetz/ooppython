@@ -3,6 +3,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 from typing import List, Iterator
 from src.entity.kurs import Kurs
+from src.entity.enums import KursSchwere
 
 
 @dataclass
@@ -92,31 +93,45 @@ class Studium:
         return self.anzahl_tage - self.vergangene_tage(datum)
 
 
-    def fuege_kurs_hinzu(self, kurs: Kurs) -> None:
+    def fuege_kurs_hinzu(self, kurs_id: str, name: str, ects: int, schwere: KursSchwere, noten: list = None, beginn: date | None = None, ende: date | None = None) -> None:
         """
         Fügt einen Kurs zum Studium hinzu.
         
         Args:
-            kurs (Kurs): Der hinzuzufügende Kurs.
+            kurs_id (str): Die ID des Kurses.
+            name (str): Der Name des Kurses.
+            ects (int): Die ECTS-Punkte des Kurses.
+            schwere (KursSchwere): Die Schwierigkeit des Kurses.
+            noten (list): Die Noten des Kurses.
+            beginn (date | None): Der Beginn des Kurses.
+            ende (date | None): Das Ende des Kurses.
         """
-        self._kurse.append(kurs)
+        neuer_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere, noten=noten or [], beginn=beginn, ende=ende)
+        self._kurse.append(neuer_kurs)
 
 
-    def aktualisiere_kurs(self, kurs: Kurs) -> None:
+    def aktualisiere_kurs(self, kurs_id: str, name: str, ects: int, schwere: KursSchwere, noten: list = None, beginn: date | None = None, ende: date | None = None) -> None:
         """
         Aktualisiert einen bestehenden Kurs.
         
         Args:
-            kurs (Kurs): Der zu aktualisierende Kurs.
+            kurs_id (str): Die ID des zu aktualisierenden Kurses.
+            name (str): Der neue Name des Kurses.
+            ects (int): Die neuen ECTS-Punkte des Kurses.
+            schwere (KursSchwere): Die neue Schwierigkeit des Kurses.
+            noten (list): Die neuen Noten des Kurses.
+            beginn (date | None): Der neue Beginn des Kurses.
+            ende (date | None): Das neue Ende des Kurses.
             
         Raises:
             ValueError: Wenn der Kurs nicht gefunden wird.
         """
-        idx = self._kurs_idx(kurs.id)
+        idx = self._kurs_idx(kurs_id)
         if idx is None:
-            raise ValueError(f"Kurs mit id {kurs.id} nicht gefunden.")
+            raise ValueError(f"Kurs mit id {kurs_id} nicht gefunden.")
         
-        self._kurse[idx] = kurs
+        aktualisierter_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere, noten=noten or [], beginn=beginn, ende=ende)
+        self._kurse[idx] = aktualisierter_kurs
 
     
     def verschiebe_kurs(self, kurs_id: str, hoch: bool) -> None:

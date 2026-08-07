@@ -52,8 +52,8 @@ package domain {
       +anzahl_kurse(): int
       +vergangene_tage(datum: date): int
       +verbleibende_tage(datum: date): int
-      +fuege_kurs_hinzu(kurs: Kurs): None
-      +aktualisiere_kurs(kurs: Kurs): None
+      +fuege_kurs_hinzu(kurs_id: str, name: str, ects: int, schwere: KursSchwere, noten: list, beginn: date | None, ende: date | None): None
+      +aktualisiere_kurs(kurs_id: str, name: str, ects: int, schwere: KursSchwere, noten: list, beginn: date | None, ende: date | None): None
       +verschiebe_kurs(kurs_id: int, hoch: bool): None
     }
     class Kurs {
@@ -200,7 +200,7 @@ DashboardController "1 " --> "1 " Formatierer : erstellt
 DashboardController "1 " --> "1 " StudiumViewModel : erstellt
 DashboardController "1 " --> "1 " KursViewModel : erstellt
 DashboardController "1 " --> "1 " Studium
-DashboardController "1 " --> "0..* " Kurs
+DashboardController "1 " --> "1 " Studium
 
 'Service
 StudiumPlanungService "1 " --> "1 " Studium
@@ -214,6 +214,7 @@ StudiumRepository "1 " --> "0..* " Kurs
 
 'Entity
 Studium "1 " *-- "0..* " Kurs
+Studium "1 " -- "0..* " KursSchwere
 Kurs "1 " o-- "1 " KursSchwere
 Kurs "1 " o-- "1 " KursStatus
 
