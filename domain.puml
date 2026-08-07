@@ -7,7 +7,6 @@ skinparam classAttributeIconSize 0
 package domain {
   package service {
     class StudiumPlanungService {
-      +setze_kurs_zeitraeume(studium: Studium): None
       +get_semester(studium: Studium): Semester[]
       +get_studium_statistik(studium: Studium, datum: date): StudiumStatistik
       +kurse_fertig(studium: Studium): Kurs[]

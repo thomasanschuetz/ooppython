@@ -4,6 +4,7 @@ from typing import List
 
 from src.repo.studium_repository import StudiumRepository
 from src.service.studium_planung_service import StudiumPlanungService
+from src.service.studium_verwaltung_service import StudiumVerwaltungService
 from src.entity.studium import Studium
 from src.entity.enums import KursSchwere
 from src.view.transformers.studium_transformer import StudiumTransformer
@@ -32,6 +33,7 @@ class DashboardController:
         self.repository = repository
         self.datum = datum
         self.studium_transformer = StudiumTransformer(Formatierer())
+        self.verwaltung_service = StudiumVerwaltungService(repository)
 
     def lade_studium(self) -> Studium:
         """
@@ -44,8 +46,6 @@ class DashboardController:
 
         if studium is None:
             studium = Studium('Mein Studium', date.today(), 1.0, 36, [])
-        
-        self.planung_service.setze_kurs_zeitraeume(studium)
 
         return studium
     
@@ -93,9 +93,7 @@ class DashboardController:
             schwere (int): Die Schwierigkeit des Kurses.
         """
         studium = self.lade_studium()
-        studium.fuege_kurs_hinzu(kurs_id=uuid.uuid4().hex, name=name, ects=ects, schwere=KursSchwere(schwere))
-        self.planung_service.setze_kurs_zeitraeume(studium)
-        self.repository.speichere_studium(studium)
+        self.verwaltung_service.erstelle_kurs(studium, name, ects, KursSchwere(schwere))
 
     def aktualisiere_kurs(self, kurs_id: str, name: str, ects: int, schwere: int, noten: List[float]) -> None:
         """
@@ -109,9 +107,7 @@ class DashboardController:
             noten (List[float]): Die neuen Noten des Kurses.
         """
         studium = self.lade_studium()
-        studium.aktualisiere_kurs(kurs_id=kurs_id, name=name, ects=ects, schwere=KursSchwere(schwere), noten=noten)
-        self.planung_service.setze_kurs_zeitraeume(studium)
-        self.repository.speichere_studium(studium)
+        self.verwaltung_service.aktualisiere_kurs(studium, kurs_id, name, ects, schwere, noten)
 
     def verschiebe_kurs(self, kurs_id: str, hoch: bool) -> None:
         """
@@ -122,9 +118,7 @@ class DashboardController:
             hoch (bool): True, wenn der Kurs nach oben verschoben werden soll, False für nach unten.
         """
         studium = self.lade_studium()
-        studium.verschiebe_kurs(kurs_id, hoch)
-        self.planung_service.setze_kurs_zeitraeume(studium)
-        self.repository.speichere_studium(studium)
+        self.verwaltung_service.verschiebe_kurs(studium, kurs_id, hoch)
 
     def aktualisiere_studium(self, name: str, beginn: date, ziel_note: float, ziel_monate: int) -> None:
         """
@@ -137,9 +131,4 @@ class DashboardController:
             ziel_monate (int): Die neue Zieldauer des Studiums in Monaten.
         """
         studium = self.lade_studium()
-        studium.name = name
-        studium.beginn = beginn
-        studium.ziel_note = ziel_note
-        studium.ziel_monate = ziel_monate
-        self.planung_service.setze_kurs_zeitraeume(studium)
-        self.repository.speichere_studium(studium)
+        self.verwaltung_service.aktualisiere_studium(studium, name, beginn, ziel_note, ziel_monate)

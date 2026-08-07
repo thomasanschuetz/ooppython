@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from typing import List, Iterator
@@ -6,7 +5,6 @@ from src.entity.kurs import Kurs
 from src.entity.enums import KursSchwere
 
 
-@dataclass
 class Studium:
     """
     Klasse zur Darstellung eines Studiums.
@@ -18,11 +16,24 @@ class Studium:
         ziel_monate (int): Die angestrebte Dauer des Studiums in Monaten.
         _kurse (List[Kurs]): Die Liste der Kurse des Studiums.
     """
-    name: str
-    beginn: date
-    ziel_note: float
-    ziel_monate: int
-    _kurse: List[Kurs] = field(default_factory=list)
+    
+    def __init__(self, name: str, beginn: date, ziel_note: float, ziel_monate: int, kurse: List[Kurs] = None):
+        """
+        Initialisiert ein Studium.
+        
+        Args:
+            name (str): Der Name des Studiums.
+            beginn (date): Der Beginn des Studiums.
+            ziel_note (float): Die angestrebte Durchschnittsnote.
+            ziel_monate (int): Die angestrebte Dauer des Studiums in Monaten.
+            kurse (List[Kurs]): Die Liste der Kurse des Studiums.
+        """
+        self.name = name
+        self.beginn = beginn
+        self.ziel_note = ziel_note
+        self.ziel_monate = ziel_monate
+        self._kurse = kurse if kurse is not None else []
+        self._setze_kurs_zeitraeume()
 
 
     @property
@@ -92,6 +103,28 @@ class Studium:
         """
         return self.anzahl_tage - self.vergangene_tage(datum)
 
+    def _setze_kurs_zeitraeume(self) -> None:
+        """
+        Setzt die Zeiträume für die Kurse des Studiums.
+        """
+        kurse = self._kurse
+
+        if not kurse:
+            return
+
+        summe_schwere = sum([k.schwere for k in kurse])
+        
+        tage_pro_kurs = [round(k.schwere / summe_schwere * self.anzahl_tage) for k in kurse]
+        tage_pro_kurs[-1] = self.anzahl_tage - sum(tage_pro_kurs[:-1])
+
+        assert sum(tage_pro_kurs) == self.anzahl_tage
+        
+        referenzdatum = self.beginn
+        for idx, k in enumerate(kurse):
+            k.beginn = referenzdatum
+            k.ende = k.beginn + relativedelta(days=tage_pro_kurs[idx]-1)
+            referenzdatum = k.ende + relativedelta(days=1)
+
 
     def fuege_kurs_hinzu(self, kurs_id: str, name: str, ects: int, schwere: KursSchwere, noten: list = None, beginn: date | None = None, ende: date | None = None) -> None:
         """
@@ -108,6 +141,7 @@ class Studium:
         """
         neuer_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere, noten=noten or [], beginn=beginn, ende=ende)
         self._kurse.append(neuer_kurs)
+        self._setze_kurs_zeitraeume()
 
 
     def aktualisiere_kurs(self, kurs_id: str, name: str, ects: int, schwere: KursSchwere, noten: list = None, beginn: date | None = None, ende: date | None = None) -> None:
@@ -132,6 +166,7 @@ class Studium:
         
         aktualisierter_kurs = Kurs(id=kurs_id, name=name, ects=ects, schwere=schwere, noten=noten or [], beginn=beginn, ende=ende)
         self._kurse[idx] = aktualisierter_kurs
+        self._setze_kurs_zeitraeume()
 
     
     def verschiebe_kurs(self, kurs_id: str, hoch: bool) -> None:
@@ -155,6 +190,7 @@ class Studium:
             if idx == (len(self._kurse) - 1):
                 return
             self._kurse[idx+1], self._kurse[idx] = self._kurse[idx], self._kurse[idx+1]
+        self._setze_kurs_zeitraeume()
 
 
     def _kurs_idx(self, kurs_id: str) -> int|None:

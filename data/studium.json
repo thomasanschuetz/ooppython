@@ -1,17 +1,17 @@
 {
     "name": "Mein Studium",
-    "beginn": "2026-02-18",
-    "ziel_note": 1.9,
-    "ziel_monate": 14,
+    "beginn": "2026-03-18",
+    "ziel_note": 1.8,
+    "ziel_monate": 22,
     "kurse": [
         {
             "id": "3cfc7b88bfef40a18cbdd04444d372e0",
             "name": "bar",
             "ects": 5,
-            "schwere": 3,
+            "schwere": 1,
             "noten": [],
-            "beginn": "2026-02-18",
-            "ende": "2026-06-13"
+            "beginn": "2026-03-18",
+            "ende": "2026-04-07"
         },
         {
             "id": "0644d48b81524f1b93dfb7289fdf0644",
@@ -23,8 +23,8 @@
                 5.0,
                 2.0
             ],
-            "beginn": "2026-06-14",
-            "ende": "2026-12-23"
+            "beginn": "2026-04-08",
+            "ende": "2026-07-23"
         },
         {
             "id": "a6eed099107e4b12a3e3abab23f7db0f",
@@ -34,8 +34,17 @@
             "noten": [
                 5.0
             ],
-            "beginn": "2026-12-24",
-            "ende": "2027-01-31"
+            "beginn": "2026-07-24",
+            "ende": "2026-08-13"
+        },
+        {
+            "id": "90aa91c5d4b14549826c9c51d27b9be9",
+            "name": "erz",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-08-14",
+            "ende": "2026-10-16"
         },
         {
             "id": "420007ab1850431191b9427b4707f1b5",
@@ -43,8 +52,21 @@
             "ects": 5,
             "schwere": 2,
             "noten": [],
-            "beginn": "2027-02-01",
-            "ende": "2027-04-17"
+            "beginn": "2026-10-17",
+            "ende": "2026-11-28"
+        },
+        {
+            "id": "891c7630b6b446bf95550dc6a257dac3",
+            "name": "asdg",
+            "ects": 3,
+            "schwere": 5,
+            "noten": [
+                5.0,
+                5.0,
+                1.0
+            ],
+            "beginn": "2026-11-29",
+            "ende": "2027-03-17"
         }
     ]
 }

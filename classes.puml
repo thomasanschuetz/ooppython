@@ -43,7 +43,6 @@ package repo {
 package domain {
   package service {
     class StudiumPlanungService {
-      +setze_kurs_zeitraeume(studium: Studium): None
       +get_semester(studium: Studium): Semester[]
       +get_studium_statistik(studium: Studium, datum: date): StudiumStatistik
       +kurse_fertig(studium: Studium): Kurs[]
@@ -55,6 +54,12 @@ package domain {
       +anzahl_ects_fertig(studium: Studium): int
       +durchschnittsnote(studium: Studium): float | None
       +benoetigte_durchschnittsnote(studium: Studium): float | None
+    }
+    class StudiumVerwaltungService {
+      + erstelle_kurs(studium: Studium, name: str, ects: int, schwere: KursSchwere) : void
+      + aktualisiere_kurs(studium: Studium, kurs_id: str, name: str, ects: int, schwere: int, noten: List[float]) : void
+      + verschiebe_kurs(studium: Studium, kurs_id: str, hoch: bool) : void
+      + aktualisiere_studium(studium: Studium, name: str, beginn: date, ziel_note: float, ziel_monate: int) : void
     }
   }
 
@@ -219,6 +224,7 @@ DashboardApplication "1 "--  "0..* " KursSchwere
 'Controller
 DashboardController "1 " o-- "1 " StudiumRepository
 DashboardController "1 " o-- "1 " StudiumPlanungService
+DashboardController "1 " o-- "1 " StudiumVerwaltungService
 DashboardController "1 " o-- "1 " StudiumTransformer
 DashboardController "1 " --> "1 " Formatierer : erstellt
 DashboardController "1 " --> "1 " StudiumViewModel : erstellt
@@ -231,6 +237,10 @@ StudiumPlanungService "1 " --> "1 " Studium
 StudiumPlanungService "1 " --> "0..* " Kurs
 StudiumPlanungService "1 " --> "1..* " Semester
 StudiumPlanungService "1 " --> "1 " StudiumStatistik
+
+StudiumVerwaltungService "1 " --> "1 " StudiumRepository
+StudiumVerwaltungService "1 " -- "1 " Studium
+StudiumVerwaltungService "1 " -- "0..* " KursSchwere
 
 'Repo
 StudiumRepository "1 " --> "1 " Studium
