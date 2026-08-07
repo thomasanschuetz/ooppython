@@ -1,93 +1,336 @@
 {
     "name": "Mein Studium",
-    "beginn": "2026-03-18",
-    "ziel_note": 1.8,
-    "ziel_monate": 22,
+    "beginn": "2025-05-25",
+    "ziel_note": 2.0,
+    "ziel_monate": 36,
     "kurse": [
         {
-            "id": "3cfc7b88bfef40a18cbdd04444d372e0",
-            "name": "bar",
-            "ects": 5,
-            "schwere": 1,
-            "noten": [
-                5.0,
-                2.0
-            ],
-            "beginn": "2026-03-18",
-            "ende": "2026-04-15"
-        },
-        {
-            "id": "0644d48b81524f1b93dfb7289fdf0644",
-            "name": "foo",
-            "ects": 5,
-            "schwere": 5,
-            "noten": [
-                5.0,
-                5.0,
-                2.0
-            ],
-            "beginn": "2026-04-16",
-            "ende": "2026-09-08"
-        },
-        {
-            "id": "a6eed099107e4b12a3e3abab23f7db0f",
-            "name": "baz",
-            "ects": 5,
-            "schwere": 1,
-            "noten": [
-                5.0
-            ],
-            "beginn": "2026-09-09",
-            "ende": "2026-10-07"
-        },
-        {
-            "id": "90aa91c5d4b14549826c9c51d27b9be9",
-            "name": "erz",
+            "id": "7e67870a05204a0e880702d224804f23",
+            "name": "Artificial Intelligence",
             "ects": 5,
             "schwere": 3,
-            "noten": [],
-            "beginn": "2026-10-08",
-            "ende": "2027-01-03"
-        },
-        {
-            "id": "420007ab1850431191b9427b4707f1b5",
-            "name": "mit schwere",
-            "ects": 5,
-            "schwere": 2,
-            "noten": [],
-            "beginn": "2027-01-04",
-            "ende": "2027-03-02"
-        },
-        {
-            "id": "891c7630b6b446bf95550dc6a257dac3",
-            "name": "asdg",
-            "ects": 3,
-            "schwere": 5,
             "noten": [
-                5.0,
-                5.0,
                 1.0
             ],
-            "beginn": "2027-03-03",
-            "ende": "2027-07-26"
+            "beginn": "2025-05-25",
+            "ende": "2025-06-23"
         },
         {
-            "id": "b7ac8d3854134db0afc2a26bded958b4",
-            "name": "sag",
+            "id": "bde9d3ba14764aaa855a1f1c94a14b88",
+            "name": "Einführung in das wissenschaftliche Arbeiten für IT und Technik",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                1.7
+            ],
+            "beginn": "2025-06-24",
+            "ende": "2025-07-23"
+        },
+        {
+            "id": "9f74defb1cd7469e8d4ccbf7101abc55",
+            "name": "Einführung in die Programmierung mit Python",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                1.3
+            ],
+            "beginn": "2025-07-24",
+            "ende": "2025-08-22"
+        },
+        {
+            "id": "b17b2657c38142bcb875e3980cff1405",
+            "name": "Mathematik: Analysis",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                1.3
+            ],
+            "beginn": "2025-08-23",
+            "ende": "2025-09-21"
+        },
+        {
+            "id": "c66e9656f05d40e9aaf1d5e7283a3640",
+            "name": "Kollaboratives Arbeiten",
             "ects": 5,
             "schwere": 3,
             "noten": [],
-            "beginn": "2027-07-27",
-            "ende": "2027-10-22"
+            "beginn": "2025-09-22",
+            "ende": "2025-10-21"
         },
         {
-            "id": "9ab9e6ca3dbe4b7c97d42fb5765f8601",
-            "name": "dh",
+            "id": "b38b9dacd00c4924a1e8d58c348f01d1",
+            "name": "Statistik - Wahrscheinlichkeit und deskriptive Statistik",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                1.0
+            ],
+            "beginn": "2025-10-22",
+            "ende": "2025-11-20"
+        },
+        {
+            "id": "73e14ea7f6b5411c90d0428d0ab1dc5c",
+            "name": "Mathematik: Lineare Algebra",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                1.7
+            ],
+            "beginn": "2025-11-21",
+            "ende": "2025-12-20"
+        },
+        {
+            "id": "a9e839bf55a84b8fbc3ca09bd4cc687f",
+            "name": "Interkulturelle und ethische Handlungskompetenzen",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                2.0
+            ],
+            "beginn": "2025-12-21",
+            "ende": "2026-01-19"
+        },
+        {
+            "id": "3f520996b6a0431e88ef6048f50e5080",
+            "name": "Statistik - Induktive Statistik",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                2.0
+            ],
+            "beginn": "2026-01-20",
+            "ende": "2026-02-18"
+        },
+        {
+            "id": "fd62f57f40664ea3962eda008eaf4c76",
+            "name": "Projekt: Cloud Programming ",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                2.3
+            ],
+            "beginn": "2026-02-19",
+            "ende": "2026-03-20"
+        },
+        {
+            "id": "3d09d5abad74456daec878a682467f9b",
+            "name": "Maschinelles Lernen - Supervised Learning",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                1.0
+            ],
+            "beginn": "2026-03-21",
+            "ende": "2026-04-19"
+        },
+        {
+            "id": "0079cdc9e1f246f1879cd7bd85ce1550",
+            "name": "Projekt: Objektorientierte und funktionale Programmierung mit Python",
             "ects": 5,
             "schwere": 3,
             "noten": [],
-            "beginn": "2027-10-23",
-            "ende": "2028-01-17"
+            "beginn": "2026-04-20",
+            "ende": "2026-05-19"
+        },
+        {
+            "id": "7d1d20ebb27240078d45fd2b26d63082",
+            "name": "Einführung in Computer Vision",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [
+                1.3
+            ],
+            "beginn": "2026-05-20",
+            "ende": "2026-06-18"
+        },
+        {
+            "id": "88482317370943b68ba31e23376a0505",
+            "name": "Cloud Computing ",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-06-19",
+            "ende": "2026-07-18"
+        },
+        {
+            "id": "c0645b276c0e41818db3aefca6507a8a",
+            "name": "Maschinelles Lernen - Unsupervised Learning und Feature Engineering",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-07-19",
+            "ende": "2026-08-17"
+        },
+        {
+            "id": "6a12bfde8d2c46febe6ecb35d08edcd9",
+            "name": "Einführung in das Reinforcement Learning",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-08-18",
+            "ende": "2026-09-16"
+        },
+        {
+            "id": "b5e730d32e2d4c749eecfae90de4eb14",
+            "name": "Projekt: Computer Vision",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-09-17",
+            "ende": "2026-10-16"
+        },
+        {
+            "id": "0965b85c3d6a4a5faab902806a0b5752",
+            "name": "Neuronale Netze und Deep Learning",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-10-17",
+            "ende": "2026-11-15"
+        },
+        {
+            "id": "115a68f362c345e081d05790d4dfd2d6",
+            "name": "Neuronale Netze und Deep Learning",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-11-16",
+            "ende": "2026-12-15"
+        },
+        {
+            "id": "1f6a625524a64cd5aa3f3a9df3bd83f4",
+            "name": "Einführung in NLP",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-12-16",
+            "ende": "2027-01-14"
+        },
+        {
+            "id": "510768b7962c421c949122ec5b3fb3e6",
+            "name": "Projekt: NLP",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-01-15",
+            "ende": "2027-02-13"
+        },
+        {
+            "id": "2a3ac0f3fd8d4f11b92224d94b8bd4b8",
+            "name": "Data Science Software Engineering",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-02-14",
+            "ende": "2027-03-15"
+        },
+        {
+            "id": "41b405a8a9cb4707ae25b7c30177ccbd",
+            "name": "Projekt: Vom Modell zum Produktvertrieb",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-03-16",
+            "ende": "2027-04-14"
+        },
+        {
+            "id": "63ffc6ad8f804ad7badd4d5c1f31761c",
+            "name": "Einführung in Datenschutz und IT-Sicherheit",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-04-15",
+            "ende": "2027-05-14"
+        },
+        {
+            "id": "5b9036db7c7d4cd887b9e944ebaabb78",
+            "name": "Seminar: Ethische Fragen der Data Science",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-05-15",
+            "ende": "2027-06-13"
+        },
+        {
+            "id": "6e3e728ba589458d8ac9a620fe39ce8c",
+            "name": "UX-Projekt",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-06-14",
+            "ende": "2027-07-13"
+        },
+        {
+            "id": "9b4a048317cf44058e171d1dfb160830",
+            "name": "Projekt: Edge AI",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-07-14",
+            "ende": "2027-08-12"
+        },
+        {
+            "id": "d56163602fb44008a63ea1787f47cdb3",
+            "name": "Einführung in die Robotik",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-08-13",
+            "ende": "2027-09-11"
+        },
+        {
+            "id": "36c29f3a416e414e8ea66082bcc04935",
+            "name": "Projekt: Agiles Projektmanagement",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-09-12",
+            "ende": "2027-10-11"
+        },
+        {
+            "id": "924db6eccd6d4bffa675ec72a4e3538e",
+            "name": "User Experience",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2027-10-12",
+            "ende": "2027-11-10"
+        },
+        {
+            "id": "e312ecc10dff4d30950e1d1d5d34c6c6",
+            "name": "Wahlpflichtmodul A",
+            "ects": 10,
+            "schwere": 5,
+            "noten": [],
+            "beginn": "2027-11-11",
+            "ende": "2027-12-30"
+        },
+        {
+            "id": "c0f1f05d7d6242a8904b77b045c9b179",
+            "name": "Wahlpflichtmodul B",
+            "ects": 10,
+            "schwere": 5,
+            "noten": [],
+            "beginn": "2027-12-31",
+            "ende": "2028-02-18"
+        },
+        {
+            "id": "a34e961a438d4ca391aee0ace23b0cf6",
+            "name": "Wahlpflichtmodul C",
+            "ects": 10,
+            "schwere": 5,
+            "noten": [],
+            "beginn": "2028-02-19",
+            "ende": "2028-04-08"
+        },
+        {
+            "id": "3e87c0a452804be8983190c536e4740b",
+            "name": "Bachelorarbeit",
+            "ects": 10,
+            "schwere": 5,
+            "noten": [],
+            "beginn": "2028-04-09",
+            "ende": "2028-05-24"
         }
     ]
 }
