@@ -55,12 +55,6 @@ package domain {
       +durchschnittsnote(studium: Studium): float | None
       +benoetigte_durchschnittsnote(studium: Studium): float | None
     }
-    class StudiumVerwaltungService {
-      + erstelle_kurs(studium: Studium, name: str, ects: int, schwere: KursSchwere) : void
-      + aktualisiere_kurs(studium: Studium, kurs_id: str, name: str, ects: int, schwere: int, noten: List[float]) : void
-      + verschiebe_kurs(studium: Studium, kurs_id: str, hoch: bool) : void
-      + aktualisiere_studium(studium: Studium, name: str, beginn: date, ziel_note: float, ziel_monate: int) : void
-    }
   }
 
   package entity {
@@ -69,9 +63,9 @@ package domain {
       +beginn: datetime.date
       +ziel_note: float
       +ziel_monate: int
-      +ende(): date
-      +anzahl_tage(): int
-      +anzahl_kurse(): int
+      +ende: date
+      +anzahl_tage: int
+      +anzahl_kurse: int
       +vergangene_tage(datum: date): int
       +verbleibende_tage(datum: date): int
       +fuege_kurs_hinzu(kurs_id: str, name: str, ects: int, schwere: KursSchwere, noten: list, beginn: date | None, ende: date | None): None
@@ -85,11 +79,11 @@ package domain {
       +noten: float[]
       +beginn: date | None
       +ende: date | None
-      +anzahl_tage(): int | None
+      +anzahl_tage: int | None
+      +note: None | float
+      +kann_note_hinzufuegen: bool
+      +ist_fertig: bool
       +faellig_in_tagen(datum: date): int
-      +kann_note_hinzufuegen(): bool
-      +ist_fertig(): bool
-      +note(): None | float
       +berechne_status(datum: date): KursStatus
       +ist_aktiv(datum: date): bool
       +ist_faellig(datum: date): bool
@@ -99,7 +93,7 @@ package domain {
       +no: int
       +beginn: date
       +ende: date
-      +anzahl_tage(): int
+      +anzahl_tage: int
     }
 
     class StudiumStatistik {

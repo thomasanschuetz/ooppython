@@ -56,4 +56,4 @@ class KursTransformer():
         Returns:
             bool: True, wenn die Note angezeigt werden soll, False sonst.
         """
-        return (len(kurs.noten) == x-1 and kurs.kann_note_hinzufuegen()) or (len(kurs.noten) >= x)
+        return (len(kurs.noten) == x-1 and kurs.kann_note_hinzufuegen) or (len(kurs.noten) >= x)

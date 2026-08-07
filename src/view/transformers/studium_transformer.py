@@ -43,7 +43,7 @@ class StudiumTransformer:
         semester_view_models = [
             SemesterViewModel(
                 name=str(s.no),
-                hoehe_rel=s.anzahl_tage()
+                hoehe_rel=s.anzahl_tage
             )
             for s in semester_list
         ]

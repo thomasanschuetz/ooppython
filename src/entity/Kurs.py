@@ -38,7 +38,7 @@ class Kurs:
         if self.beginn is None or self.ende is None:
             return KursStatus.UNGEPLANT
         
-        elif self.ist_fertig():
+        elif self.ist_fertig:
             return KursStatus.FERTIG
         
         elif self.ist_faellig(datum):
@@ -79,7 +79,8 @@ class Kurs:
             return 0
         
         return (self.ende - datum).days
-    
+
+    @property
     def kann_note_hinzufuegen(self) -> bool:
         """
         Prüft, ob eine weitere Note hinzugefügt werden kann.
@@ -87,9 +88,9 @@ class Kurs:
         Returns:
             bool: True, wenn eine weitere Note hinzugefügt werden kann, False sonst.
         """
-        return len(self.noten) < 3 and not self.ist_fertig()
+        return len(self.noten) < 3 and not self.ist_fertig
    
-
+    @property
     def ist_fertig(self) -> bool:
         """
         Prüft, ob der Kurs erfolgreich abgeschlossen wurde.
@@ -127,7 +128,7 @@ class Kurs:
         """
         if not self._hat_start_und_ende():
             return False
-        return (not self.ist_faellig(datum)) and (not self.ist_fertig()) and self.beginn <= datum and datum <= self.ende
+        return (not self.ist_faellig(datum)) and (not self.ist_fertig) and self.beginn <= datum and datum <= self.ende
 
 
     def ist_faellig(self, datum: date) -> bool:
@@ -142,7 +143,7 @@ class Kurs:
         """
         if not self._hat_start_und_ende():
             return False
-        return (not self.ist_fertig()) and self.ende < datum
+        return (not self.ist_fertig) and self.ende < datum
     
     def _hat_start_und_ende(self) -> bool:
         """

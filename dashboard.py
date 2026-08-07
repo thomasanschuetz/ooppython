@@ -6,21 +6,8 @@ from src.controller.dashboard_controller import DashboardController
 from src.validation.validator import Validator
 from src.entity.enums import KursSchwere
 
-
-class DashboardApplication:
-    """
-    Hauptanwendungsklasse für das Dashboard.
-    
-    Diese Klasse verwaltet die Flask-Anwendung und die Routen für das Dashboard.
-    """
-
+class WebApplication:
     def __init__(self, repo_pfad: str):
-        """
-        Initialisiert die DashboardApplication.
-        
-        Args:
-            repo_pfad (str): Der Pfad zum Repository für das Studium.
-        """
         self.app = Flask(__name__)
         
         self.today = date.today()
@@ -35,9 +22,6 @@ class DashboardApplication:
         self._registriere_routen()
 
     def _registriere_routen(self):
-        """
-        Registriert alle Routen für die Flask-Anwendung.
-        """
         
         self.app.add_url_rule("/", "dashboard", self.dashboard, methods=["GET"])
         self.app.add_url_rule("/update_studium", "get_update_studium", self.get_update_studium, methods=["GET"])
@@ -49,22 +33,10 @@ class DashboardApplication:
         self.app.add_url_rule("/erstelle_kurs", "post_erstelle_kurs", self.post_erstelle_kurs, methods=["POST"])
 
     def dashboard(self) -> str:
-        """
-        Zeigt das Dashboard an.
-        
-        Returns:
-            str: Die gerenderte HTML-Seite des Dashboards.
-        """
         studium_view = self.dashboard_controller.lade_studium_view()
         return render_template('dashboard.html', studium=studium_view)
 
     def get_update_studium(self) -> str:
-        """
-        Zeigt das Formular zum Aktualisieren des Studiums an.
-        
-        Returns:
-            str: Die gerenderte HTML-Seite zum Aktualisieren des Studiums.
-        """
         studium = self.dashboard_controller.lade_studium()
         return render_template('update_studium.html', 
             name=studium.name,
@@ -74,12 +46,6 @@ class DashboardApplication:
         )
 
     def post_update_studium(self) -> str:
-        """
-        Aktualisiert das Studium basierend auf den Formulardaten.
-        
-        Returns:
-            str: Eine Weiterleitung zur Startseite nach erfolgreicher Aktualisierung.
-        """
         p = request.form
         name = p.get('name')
         beginn = p.get('beginn')
@@ -96,17 +62,16 @@ class DashboardApplication:
                 flash(error, 'error')
             return render_template('update_studium.html', name=name, beginn=beginn, ziel_note=ziel_note, ziel_monate=ziel_monate)
 
-        self.dashboard_controller.aktualisiere_studium(name, date.fromisoformat(beginn), float(ziel_note), int(ziel_monate))
+        studium = self.dashboard_controller.lade_studium()
+        studium.name = name
+        studium.beginn = date.fromisoformat(beginn)
+        studium.ziel_monate = int(ziel_monate)
+        studium.ziel_note = float(ziel_note)
+        self.studium_repo.speichere_studium(studium)
 
         return redirect('/')
 
     def bewege_kurs(self) -> str:
-        """
-        Verschiebt einen Kurs in der Reihenfolge.
-        
-        Returns:
-            str: Eine Weiterleitung zur Startseite nach erfolgreicher Verschiebung.
-        """
         p = request.form
         kurs_id = p.get('kurs_id')
         hoch = p.get('richtung') == 'hoch'
@@ -114,24 +79,12 @@ class DashboardApplication:
         return redirect('/')
 
     def get_bearbeite_kurs(self) -> str:
-        """
-        Zeigt das Formular zum Bearbeiten eines Kurses an.
-        
-        Returns:
-            str: Die gerenderte HTML-Seite zum Bearbeiten des Kurses.
-        """
         g = request.args
         kurs_id = g.get('id')
         kurs_view = self.dashboard_controller.lade_kurs_view(kurs_id)
         return render_template("bearbeite_kurs.html", kurs=kurs_view, KursSchwere=KursSchwere)
 
     def post_bearbeite_kurs(self) -> str:
-        """
-        Aktualisiert einen Kurs basierend auf den Formulardaten.
-        
-        Returns:
-            str: Eine Weiterleitung zur Startseite nach erfolgreicher Aktualisierung.
-        """
         p = request.form
         kurs_id = p.get('id')
         name = p.get('name')
@@ -156,21 +109,9 @@ class DashboardApplication:
         return redirect('/')
 
     def get_erstelle_kurs(self) -> str:
-        """
-        Zeigt das Formular zum Erstellen eines neuen Kurses an.
-        
-        Returns:
-            str: Die gerenderte HTML-Seite zum Erstellen eines Kurses.
-        """
         return render_template("erstelle_kurs.html", kurs={'name': '', 'ects': 5, 'schwere': 3}, KursSchwere=KursSchwere)
 
     def post_erstelle_kurs(self) -> str:
-        """
-        Erstellt einen neuen Kurs basierend auf den Formulardaten.
-        
-        Returns:
-            str: Eine Weiterleitung zur Startseite nach erfolgreicher Erstellung.
-        """
         p = request.form
         name = p.get('name')
         ects = p.get('ects')
@@ -186,15 +127,8 @@ class DashboardApplication:
         return redirect('/')
 
     def run(self, debug=True):
-        """
-        Startet die Flask-Anwendung.
-        
-        Args:
-            debug (bool): Gibt an, ob die Anwendung im Debug-Modus gestartet werden soll.
-        """
-        self.app.run(debug=debug)
-
+        self.app.run(debug=True)
 
 if __name__ == "__main__":
-    web_app = DashboardApplication('data/studium.json')
+    web_app = WebApplication('data/studium.json')
     web_app.run(debug=True)

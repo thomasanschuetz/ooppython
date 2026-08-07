@@ -104,7 +104,7 @@ class StudiumPlanungService:
         Returns:
             List[Kurs]: Die Liste der abgeschlossenen Kurse.
         """
-        return [k for k in filter(lambda k: k.ist_fertig(), studium.kurse)]
+        return [k for k in filter(lambda k: k.ist_fertig, studium.kurse)]
 
 
     def kurse_offen(self, studium: Studium, datum: date) -> List[Kurs]:
@@ -187,7 +187,7 @@ class StudiumPlanungService:
         Returns:
             int: Die Anzahl der ECTS-Punkte der abgeschlossenen Kurse.
         """
-        return sum([k.ects for k in studium.kurse if k.ist_fertig()])
+        return sum([k.ects for k in studium.kurse if k.ist_fertig])
 
 
     def durchschnittsnote(self, studium: Studium) -> float|None: # todo ects beachten

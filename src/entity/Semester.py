@@ -1,6 +1,7 @@
+from dataclasses import dataclass
 from datetime import date
 
-
+@dataclass
 class Semester:
     """
     Klasse zur Darstellung eines Semesters.
@@ -10,20 +11,11 @@ class Semester:
         beginn (date): Der Beginn des Semesters.
         ende (date): Das Ende des Semesters.
     """
+    no:int
+    beginn:date
+    ende:date
 
-    def __init__(self, no:int, beginn:date, ende:date):
-        """
-        Initialisiert ein Semester.
-        
-        Args:
-            no (int): Die Nummer des Semesters.
-            beginn (date): Der Beginn des Semesters.
-            ende (date): Das Ende des Semesters.
-        """
-        self.no = no
-        self.beginn = beginn
-        self.ende = ende
-
+    @property
     def anzahl_tage(self) -> int:
         """
         Berechnet die Anzahl der Tage des Semesters.
