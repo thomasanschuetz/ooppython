@@ -25,7 +25,7 @@ class Kurs:
     ende: date|None = None
 
 
-    def get_status(self, datum: date) -> KursStatus:
+    def berechne_status(self, datum: date) -> KursStatus:
         """
         Bestimmt den Status des Kurses basierend auf dem aktuellen Datum.
         

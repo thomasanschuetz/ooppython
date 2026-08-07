@@ -49,6 +49,7 @@ package domain {
       +kann_note_hinzufuegen(): bool
       +ist_fertig(): bool
       +note(): None | float
+      +berechne_status(datum: date): KursStatus
       +ist_aktiv(datum: date): bool
       +ist_faellig(datum: date): bool
     }

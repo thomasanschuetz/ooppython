@@ -24,7 +24,7 @@ class KursTransformer():
         Returns:
             KursViewModel: Das konvertierte KursViewModel.
         """
-        status = kurs.get_status(datum)
+        status = kurs.berechne_status(datum)
         
         return KursViewModel(
             id=kurs.id,

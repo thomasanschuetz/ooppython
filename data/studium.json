@@ -5,6 +5,15 @@
     "ziel_monate": 12,
     "kurse": [
         {
+            "id": "3cfc7b88bfef40a18cbdd04444d372e0",
+            "name": "bar",
+            "ects": 5,
+            "schwere": 3,
+            "noten": [],
+            "beginn": "2026-01-18",
+            "ende": "2026-05-19"
+        },
+        {
             "id": "0644d48b81524f1b93dfb7289fdf0644",
             "name": "foo",
             "ects": 5,
@@ -14,16 +23,7 @@
                 5.0,
                 2.0
             ],
-            "beginn": "2026-01-18",
-            "ende": "2026-08-08"
-        },
-        {
-            "id": "3cfc7b88bfef40a18cbdd04444d372e0",
-            "name": "bar",
-            "ects": 5,
-            "schwere": 3,
-            "noten": [],
-            "beginn": "2026-08-09",
+            "beginn": "2026-05-20",
             "ende": "2026-12-08"
         },
         {

@@ -118,7 +118,7 @@ class StudiumPlanungService:
         Returns:
             List[Kurs]: Die Liste der offenen Kurse.
         """
-        return [k for k in filter(lambda k: k.get_status(datum) == KursStatus.OFFEN, studium.kurse)]
+        return [k for k in filter(lambda k: k.berechne_status(datum) == KursStatus.OFFEN, studium.kurse)]
 
 
     def kurse_soll(self, studium: Studium, datum: date) -> List[Kurs]:
@@ -132,7 +132,7 @@ class StudiumPlanungService:
         Returns:
             List[Kurs]: Die Liste der Kurse, die bis zum aktuellen Datum abgeschlossen sein sollten.
         """
-        return [k for k in filter(lambda k: k.get_status(datum) in [KursStatus.FERTIG, KursStatus.FAELLIG], studium.kurse)]
+        return [k for k in filter(lambda k: k.berechne_status(datum) in [KursStatus.FERTIG, KursStatus.FAELLIG], studium.kurse)]
 
 
     def naechste_pruefungen(self, studium: Studium, datum: date, max_kurse:int=3) -> List[Kurs]:    
@@ -147,7 +147,7 @@ class StudiumPlanungService:
         Returns:
             List[Kurs]: Die Liste der nächsten Prüfungen.
         """
-        return [k for k in filter(lambda k: k.get_status(datum) == KursStatus.AKTIV, studium.kurse)][:max_kurse]
+        return [k for k in filter(lambda k: k.berechne_status(datum) == KursStatus.AKTIV, studium.kurse)][:max_kurse]
 
 
     def anzahl_ects(self, studium: Studium) -> int:

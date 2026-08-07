@@ -27,7 +27,7 @@ class PruefungTransformer:
                 faellig_seit_tage=-k.faellig_in_tagen(datum),
                 faellig_in_tage=None
             )
-            for k in kurse if k.get_status(datum) == KursStatus.FAELLIG
+            for k in kurse if k.berechne_status(datum) == KursStatus.FAELLIG
         ]
     
     def transformiere_naechste_pruefungen(self, kurse: List[Kurs], datum: date, max_kurse: int = 3) -> List[PruefungViewModel]:
@@ -48,5 +48,5 @@ class PruefungTransformer:
                 faellig_seit_tage=None,
                 faellig_in_tage=k.faellig_in_tagen(datum)
             )
-            for k in kurse if k.get_status(datum) == KursStatus.OFFEN
+            for k in kurse if k.berechne_status(datum) == KursStatus.OFFEN
         ][:max_kurse]
