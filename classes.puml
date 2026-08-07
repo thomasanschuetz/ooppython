@@ -25,6 +25,7 @@ package application {
     +lade_studium(): Studium
     +lade_kurs_view(kurs_id: string): KursViewModel | None
     +lade_studium_view(): StudiumViewModel
+    +aktualisiere_studium(name: str, beginn: date, ziel_note: float, ziel_monate: int) -> None
     +erstelle_kurs(name: string, ects: int, schwere: KursSchwere): None
     +aktualisiere_kurs(kurs_id: string, name: string, ects: int, schwere: KursSchwere, noten: float[]): None
     +verschiebe_kurs(kurs_id: string, hoch: bool): None

@@ -125,3 +125,21 @@ class DashboardController:
         studium.verschiebe_kurs(kurs_id, hoch)
         self.planung_service.setze_kurs_zeitraeume(studium)
         self.repository.speichere_studium(studium)
+
+    def aktualisiere_studium(self, name: str, beginn: date, ziel_note: float, ziel_monate: int) -> None:
+        """
+        Aktualisiert die Eigenschaften des Studiums.
+        
+        Args:
+            name (str): Der neue Name des Studiums.
+            beginn (date): Der neue Beginn des Studiums.
+            ziel_note (float): Die neue Zielnote des Studiums.
+            ziel_monate (int): Die neue Zieldauer des Studiums in Monaten.
+        """
+        studium = self.lade_studium()
+        studium.name = name
+        studium.beginn = beginn
+        studium.ziel_note = ziel_note
+        studium.ziel_monate = ziel_monate
+        self.planung_service.setze_kurs_zeitraeume(studium)
+        self.repository.speichere_studium(studium)

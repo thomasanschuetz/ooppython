@@ -96,12 +96,7 @@ class DashboardApplication:
                 flash(error, 'error')
             return render_template('update_studium.html', name=name, beginn=beginn, ziel_note=ziel_note, ziel_monate=ziel_monate)
 
-        studium = self.dashboard_controller.lade_studium()
-        studium.name = name
-        studium.beginn = date.fromisoformat(beginn)
-        studium.ziel_monate = int(ziel_monate)
-        studium.ziel_note = float(ziel_note)
-        self.studium_repo.speichere_studium(studium)
+        self.dashboard_controller.aktualisiere_studium(name, date.fromisoformat(beginn), float(ziel_note), int(ziel_monate))
 
         return redirect('/')
 
